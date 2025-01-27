@@ -1,0 +1,769 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Imperial+Script&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Markazi+Text:wght@400..700&display=swap');
+
+@import url('https://fonts.googleapis.com/css2?family=Playwrite+HU:wght@100..400&display=swap');
+
+
+
+
+
+.icon-send:before {
+  content: '\f1d8'; 
+  font-family: 'FontAwesome';
+  margin-right: 10px;
+}
+
+.imperial-script-regular {
+    font-family: "Imperial Script", serif;
+    font-weight: 400;
+    font-style: normal;
+  }
+  .playwrite-hu {
+    font-family: "Playwrite HU", serif;
+    font-optical-sizing: auto;
+  
+  }
+  .markazi-text {
+    font-family: "Markazi Text", serif;
+    font-optical-sizing: auto;
+    font-weight:300;
+    font-style: normal;
+  }
+  .alert-box {
+    background-color: #ffffff;
+    color: #ce0d20;
+    border: 1px solid #ffffff;
+    border-radius: 5px;
+    padding: 15px;
+    text-align: center;
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    width: 300px;
+    max-width: 90%;
+    box-sizing: border-box;
+}
+.alert-box .close-btn {
+  background: transparent;
+  border: none;
+  font-size: 18px;
+  color: #524748;
+  font-weight: bold;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  cursor: pointer;
+}
+  .maincontainer
+  {
+    overflow: hidden;
+  }
+.navbar {
+   
+   
+    background-color:#f7f7ff;
+    height: 60px;
+    width: full;
+ 
+  }
+  .logostyle {
+    position: absolute;
+    top: 10px; 
+    right: 30px; 
+    max-width: 100px; 
+    height: auto; 
+    z-index: 2; 
+  }
+  .row {
+    margin: 0;
+   
+  }
+  .grid {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    grid-template-rows: masonry;
+  }
+ 
+  .galleryContent{
+   margin: 10px;
+    display: flex;
+    flex-direction: column;
+  align-items: center;
+  padding-top: 3rem ;
+  }
+  
+  .galleryContent h1{
+    
+    font-family: 'Playwrite HU';
+    color: rgb(0, 0, 0);
+    font-weight: 400;
+    font-style: normal;padding-bottom: 10px;
+
+  }
+  .galleryContent h3{
+    font-family: 'Markazi Text';
+    color: rgb(0, 0, 0);
+    font-size: 3ch;
+
+  }.masonry-container {
+    padding:20px;
+    column-count: 6; 
+    column-gap: 10px;
+  }
+  
+  .masonry-item {
+    
+    margin-bottom: 11px; 
+  }
+  
+  .masonry-item img {
+    width: 100%;
+    display: block;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 10px;
+    padding: 20px;
+  }
+  
+  .gallery-image {
+    width: 100%;
+    cursor: pointer;
+    border-radius: 5px;
+    
+    transition: transform 0.2s;
+  }
+  
+  .gallery-image:hover {
+    transform: scale(1.05);
+  }
+ 
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+   
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+
+  .modal-content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* align-items: center;
+    justify-content: center; */
+    width: 100%;
+    height: 100%;
+    padding:20px 10px 60px 10px;
+    box-sizing: border-box;
+  }
+  
+
+  .modal-image {
+    max-width: 100%;
+    max-height: 80%;
+    object-fit: contain;
+    background: white; 
+    
+  }
+  
+  
+  .floating-button {
+    position: fixed;  
+    bottom: 20px;      
+    right: 40px;      
+    background-color: #121f2e; 
+   
+    border: 3px solid #ffffff; 
+    color: #fff;
+  
+    border-radius: 60%;
+    padding: 10px 50px;
+    box-shadow: 0 2px 5px rgba(158, 84, 84, 0.2);
+    z-index: 1000;     
+  
+    border-radius:10px;
+   cursor: pointer;
+   font-size: 20px;
+ 
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    transition: all 0.3s ease-in-out;
+  }
+  .floating-button:hover{
+    background-color: #1e3147;
+  }
+  .floating-button:active {
+    background: #2c3d84;
+    transform: translateY(2px);
+  }
+  .senddiv{
+    display: flex;
+    justify-content: flex-end;
+
+  }
+  .send-arrow-icon {
+    width: 20px; 
+    height: 20px;
+    color: white; 
+  }
+  
+  .senddiv {
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+ 
+  .prev-btn,
+  .next-btn {
+    position: absolute;
+
+
+   
+    transform: translateY(-50%);
+    
+    
+    bottom: 10px;
+    background: none;
+   border: none;
+    color: rgb(8, 8, 8);
+    font-size: 2rem;
+    cursor: pointer;
+    z-index: 10;
+  }
+  
+  .close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none; 
+    color: rgb(67, 65, 65);
+    font-size: 2rem;
+    border: none; 
+    cursor: pointer;
+    z-index: 10;
+    padding: 5px;
+    transition: color 0.3s ease;
+  }
+
+  .download-btn{
+    position: absolute;
+    top: 23px;
+    right: 40px;
+    background: none; 
+    color: rgb(67, 65, 65);
+    
+    border: none; 
+    cursor: pointer;
+    z-index: 10;
+    padding: 5px;
+    transition: color 0.3s ease;
+  }
+  .download-btn img{
+    width: 15px;
+    height: 15px;
+  }
+  
+  .prev-btn {
+    border-radius: 30px;
+    left: 50%;
+    padding-right: 40px;
+    transform: translateX(-50%) translateX(-60px);
+  }
+  
+  .next-btn {
+    border-radius: 30px;
+    right:45%;
+    transform: translateX(-50%) translateX(60px);
+  }
+  .next-btn img {
+    width: 45px;
+    height: 45px;
+  }
+  .prev-btn img {
+    width: 45px;
+    height: 45px;
+  }
+ .selecttick {
+    position: absolute;
+    bottom: 10px;
+    background-color: transparent;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    height: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+   
+}
+
+.selecttick.selected {
+    border:8px solid green;
+  background-color: transparent }
+
+.selecttick img {
+  width: 60px; 
+  height: 60px;
+  border: none; 
+  outline: none; 
+    box-shadow: none; 
+}
+
+  .checkbox-wrapper-18 .round {
+    position: relative;
+}
+
+.checkbox-wrapper-18 .round label {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 50%;
+    cursor: pointer;
+    height: 25px;
+    width: 25px;
+    display: block;
+}
+
+.checkbox-wrapper-18 .round label:after {
+    border: 2px solid #fff;
+    border-top: none;
+    border-right: none;
+    content: "";
+    height: 6px;
+    left: 8px;
+    opacity: 0;
+    position: absolute;
+    top: 9px;
+    transform: rotate(-45deg);
+    width: 12px;
+}
+
+.checkbox-wrapper-18 .round input[type="checkbox"] {
+    visibility: hidden;
+    display: none;
+    opacity: 0;
+}
+
+.checkbox-wrapper-18 .round input[type="checkbox"]:checked + label {
+    background-color: #66bb6a;
+    border-color: #66bb6a;
+}
+
+.checkbox-wrapper-18 .round input[type="checkbox"]:checked + label:after {
+    opacity: 1;
+}
+
+
+.segmented-control {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #e2e2e9;
+    border-radius: 8px;
+    overflow: hidden;
+    width: 300px;
+    height: 40px;
+    margin: 20px auto;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+
+  .segment {
+    flex: 1;
+    border: none;
+    background: none;
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 14px;
+    padding: 10px;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.3s, color 0.3s;
+  }
+  
+ 
+  .segment.active {
+    background:rgb(8, 8, 51);
+    color: rgb(255, 255, 255);
+    font-weight: bold;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+  
+
+  .segment:hover {
+    background: rgba(8, 8, 51, 0.682);
+    color:white;
+  }
+  
+  .selectedimagestyle {
+    display: flex;
+    flex-direction: column;
+
+    min-height: 100vh; 
+  }
+ 
+
+
+
+  @media (max-width: 1024px) {
+    .masonry-container {
+        padding:10px;
+        column-count: 4; 
+      
+      }
+      
+      .masonry-item {
+        
+        margin-bottom: 10px; 
+      }
+      
+      .masonry-item img {
+        width: 100%;
+        display: block;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+      .galleryContent h1{
+        font-family: 'Playwrite HU';
+        color: rgb(0, 0, 0);
+        font-size: 300;
+    
+      }
+      .galleryContent h3{
+        font-family: 'Markazi Text';
+        color: rgb(0, 0, 0);
+        font-size: 3ch;
+    
+      }
+     
+     
+      .segment:hover {
+        background: rgba(8, 8, 51, 0.682);
+        color: black;
+      }
+      .modal {
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.8);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+      }
+      .modal-content {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      
+        width: 100%;
+        height: 100%;
+        padding:20px 10px 60px 10px;
+        
+      }
+      
+    
+      .modal-image {
+    
+        background: white; 
+        
+      }
+     
+      .prev-btn,
+      .next-btn {
+        position: absolute;
+  
+    bottom: 40px;
+       
+        transform: translateY(-50%);
+        
+        
+        
+        background: none;
+       border: none;
+    
+       
+        cursor: pointer;
+        z-index: 10;
+      }
+      
+      .close-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: none; 
+        color: rgb(67, 65, 65);
+        font-size: 2rem;
+        border: none; 
+        cursor: pointer;
+        z-index: 10;
+        padding: 5px;
+        transition: color 0.3s ease;
+        font-size: 3rem;
+        height: 70px; 
+        width: 70px; 
+      }
+      
+      .download-btn{
+        position: absolute;
+        top: 35px;
+        right: 70px;
+      }
+      .download-btn img{
+        font-size: 3rem;
+        height: 35px; 
+        width: 35px; 
+      }
+      .prev-btn {
+        border-radius: 30px;
+        left: 50%;
+        padding-right: 40px;
+        transform: translateX(-50%) translateX(-60px);
+      }
+      
+      .next-btn {
+        border-radius: 30px;
+        right:40%;
+        transform: translateX(-50%) translateX(60px);
+      }
+      .next-btn img {
+        width: 40px;
+        height: 40px;
+      }
+      .prev-btn img {
+        width:40px;
+        height: 40px;
+      }
+     .selecttick {
+      
+    position: absolute;
+    bottom:40px;
+        background-color: transparent;
+        border-radius: 50%;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 50px;
+        height: 50px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 10;
+       
+    }
+    
+
+    
+    .selecttick img {
+      width: 50px; 
+      height: 50px;
+     
+    }}
+    
+  @media (max-width:768px) {
+    .masonry-container {
+        padding:10px;
+        column-count: 2; 
+        column-gap: 10px;
+      }
+      
+  .floating-button {
+  
+    bottom:25px;      
+    right: 15px;      
+   
+    padding: 5px 25px;
+    
+  
+    border-radius:15px;
+   cursor: pointer;
+   font-size: 15px;
+ 
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    transition: all 0.3s ease-in-out;
+  }
+      .masonry-item {
+        
+        margin-bottom: 10px; 
+      }
+      
+      .masonry-item img {
+        width: 100%;
+        display: block;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+      .galleryContent h1{
+        
+        font-size: 200;
+    
+      }
+      .galleryContent h3{
+       
+        font-size: 2ch;
+    
+      }
+      
+      
+     
+      .segment:hover {
+        background: rgba(8, 8, 51, 0.682);
+        color: rgb(255, 255, 255);
+      }
+      .modal {
+    
+       
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.8);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+      }
+      
+    
+      .modal-content {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      
+        width: 100%;
+        height: 100%;
+        padding:20px 10px 60px 10px;
+        
+      }
+      
+    
+      .modal-image {
+    
+        background: white; 
+        
+      }
+     
+      .prev-btn,
+      .next-btn {
+        position: absolute;
+  
+    bottom: 40px;
+       
+        transform: translateY(-50%);
+        
+        
+        
+        background: none;
+       border: none;
+    
+       
+        cursor: pointer;
+        z-index: 10;
+      }
+      
+      .close-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: none; 
+        color: rgb(67, 65, 65);
+    
+        border: none; 
+        cursor: pointer;
+        z-index: 10;
+        padding: 5px;
+        transition: color 0.3s ease;
+        font-size: 3rem;
+        height: 60px; 
+        width: 60px; 
+      }
+      
+      .prev-btn {
+        border-radius: 30px;
+        left: 50%;
+        padding-right: 40px;
+        transform: translateX(-50%) translateX(-60px);
+      }
+      .download-btn{
+        position: absolute;
+        top: 35px;
+        right: 70px;
+      }
+      .download-btn img{
+        font-size: 3rem;
+        height: 25px; 
+        width: 25px; 
+      }
+      
+      .next-btn {
+        border-radius: 30px;
+        right:30%;
+        transform: translateX(-50%) translateX(60px);
+      }
+      .next-btn img {
+        width: 40px;
+        height: 40px;
+      }
+      .prev-btn img {
+        width:40px;
+        height: 40px;
+      }
+     .selecttick {
+      
+    position: absolute;
+    bottom:40px;
+        background-color: transparent;
+        border-radius: 50%;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 50px;
+        height: 50px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 10;
+       
+    }
+    
+
+    
+    .selecttick img {
+      width: 60px; 
+      height: 60px;
+     
+    }
+    .checkbox-wrapper-18 .round label {
+    
+      height: 40px;
+      width: 40px;
+      display: block;
+  }
+  .checkbox-wrapper-18 .round label:after {
+    height: 8px; 
+    width: 14px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-45deg); 
+}
+      
+  }

@@ -1,0 +1,121 @@
+@import url('https://fonts.googleapis.com/css2?family=Imperial+Script&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Markazi+Text:wght@400..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playwrite+HU:wght@100..400&display=swap');
+.imperial-script-regular {
+    font-family: "Imperial Script", serif;
+    font-weight: 400;
+    font-style: normal;
+  }
+  .playwrite-hu {
+    font-family: "Playwrite HU", serif;
+    font-optical-sizing: auto;
+    font-weight:3rem;
+    font-style: normal;
+  }
+  .markazi-text {
+    font-family: "Markazi Text", serif;
+    font-optical-sizing: auto;
+    font-weight:300;
+    font-style: normal;
+  }
+.logostyle{
+    position: absolute;
+    top: 40px;
+    left: 50%;
+ transform: translateX(0); 
+    z-index: 2;
+    max-width: 100px;
+    height: auto;
+  
+}
+.indexpage{
+    overflow: hidden;
+}
+.indexcontainer{
+    position: relative;
+    background-image: url('.././assets/indeximage.jpg');
+    height: 100vh;
+width:full;
+object-fit:contain;
+background-size: cover;
+background-repeat: no-repeat;
+background-position: center;
+display: flex;
+justify-content: center;
+align-items: flex-end;
+padding: 20px;
+ }
+ .zoom-in-out-element {
+    animation: zoom-in-zoom-out 10s ease-in infinite;
+ 
+   
+}
+  
+  @keyframes zoom-in-zoom-out {
+    0% {
+      scale: 100%;
+    }
+    50% {
+      scale: 120%;
+    }
+    100% {
+      scale: 100%;
+    }
+  }
+  .indexContent{ 
+    position: absolute; 
+    bottom: 20px; 
+    left: 50%;
+    transform: translateX(-50%); 
+    text-align: center;
+    z-index: 2; 
+    color: white;
+    padding-bottom: 20px;
+  }
+  .indexContent h2{
+    font-family: 'Playwrite HU';
+    color: rgb(255, 255, 255);
+    font-size: 3rem;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5)
+
+  }
+  .indexContent button{
+    background-color: aliceblue;
+    padding: 10px;
+    color:rgb(93, 91, 91);
+    border-radius:  10px;
+   cursor: pointer;
+   font-size: 20px;
+border: none;
+font-family: 'sans-serif';
+  }
+  @media (max-width: 768px) {
+    .logostyle {
+      top: 40px;
+      left: 50%;
+      transform: translateX(-50%); 
+    }
+    .indexcontainer{
+        position: relative;
+     
+        height: 100vh;
+    width:full;
+    object-fit:contain;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+   
+     }
+    .indexContent button{
+        padding: 5px;
+    }
+    .indexContent h2{
+        font-size: 5ch;
+        
+    }
+
+  }

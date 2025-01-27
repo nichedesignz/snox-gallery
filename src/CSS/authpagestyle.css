@@ -1,0 +1,140 @@
+@import url('https://fonts.googleapis.com/css2?family=Playwrite+HU:wght@100..400&display=swap');
+
+.playwrite-hu {
+    font-family: "Playwrite HU", serif;
+    font-optical-sizing: auto;
+    font-weight:3rem;
+    font-style: normal;
+  } 
+  .auth-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content:flex-end;
+    height: 100vh;
+    background: white;
+    color: #000000;
+    text-align: center;
+    padding: 20px;
+    overflow: hidden; 
+}
+
+.auth-background {
+    position: absolute; 
+    top: 0;
+    left: 0;
+    width: 100%; 
+    height: 100%; 
+    background-image: url('../assets/indeximage.jpg'); 
+    /* filter: blur(2px); */
+    background-size: cover; 
+    background-repeat: no-repeat;
+    background-position: center;
+    z-index: 1; 
+}
+
+.content {
+    position: relative; 
+    z-index: 2;
+    /* background: rgba(255, 255, 255, 0.8);  */
+    padding: 20px;
+    border-radius: 10px; 
+    /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);  */
+    max-width: 400px; 
+    width: 90%; 
+}
+
+.logo-style {
+    position: absolute;
+    top: 20px;
+    left: 50%; 
+    transform: translateX(-50%); 
+    z-index: 3; 
+    max-width: 100px;
+    height: auto;
+}
+
+  .title {
+    font-family: 'Playwrite HU';
+    font-size: 2.5rem;
+    color: white;
+    margin-bottom: 50px;
+  }
+  
+  .details {
+    font-size: 1rem;
+    margin-bottom: 20px;
+    color: #bbb;
+  }
+  
+  .form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .input {
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #000000;
+    border-radius: 5px;
+    background: #fffefe;
+    color: #000000;
+    outline: none;
+  }
+  
+  .input:focus {
+    border-color: #1e3147;
+  }
+  
+  .button {
+    font-family: 'Times New Roman', Times, serif;
+    padding: 10px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+    background: #1e3147;
+    color: #fffcfc;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  
+  .button:hover {
+    background: #273c54;
+  }
+  
+  .terms {
+    margin-top: 20px;
+    font-size: 0.9rem;
+    color: #999;
+  }
+  
+  .link {
+    color: #f2b8b8;
+    text-decoration: none;
+  }
+  
+  .link:hover {
+    text-decoration: underline;
+  }
+  
+ 
+  @media (max-width: 600px) {
+    .title {
+      font-size: 1.2rem;
+    }
+  
+    .details {
+      font-size: 0.9rem;
+    }
+  
+    .input, .button {
+      font-size: 0.9rem;
+    }
+  
+    .terms {
+      font-size: 0.8rem;
+    }
+  }
+  
