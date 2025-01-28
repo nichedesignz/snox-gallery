@@ -5,8 +5,39 @@
 @import url('https://fonts.googleapis.com/css2?family=Playwrite+HU:wght@100..400&display=swap');
 
 
+.image-wrapper {
+  position: relative;
+  display: inline-block;
+}
 
+.checkbox-container {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 10;
+}
 
+.checkbox-container input[type="checkbox"] {
+  display: none;
+}
+
+.custom-checkbox {
+  width: 20px;
+  height: 20px;
+  background-color: white;
+  border: 2px solid #000;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.checkbox-container input[type="checkbox"]:checked + .custom-checkbox {
+  background-color: #007bff;
+  border-color: #007bff;
+}
+*{
+  padding: 0;
+  margin: 0;
+}
 
 .icon-send:before {
   content: '\f1d8'; 
@@ -174,6 +205,7 @@
     height: 100%;
     padding:20px 10px 60px 10px;
     box-sizing: border-box;
+    background-color: white;
   }
   
 
