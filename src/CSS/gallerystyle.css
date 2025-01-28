@@ -320,8 +320,11 @@
 }
 
 .selecttick.selected {
-    border:8px solid green;
-  background-color: transparent }
+  border: 8px solid green !important;
+  background-color: transparent;
+}
+
+
 
 .selecttick img {
   width: 60px; 

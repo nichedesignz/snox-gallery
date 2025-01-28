@@ -14,8 +14,10 @@ function AuthPage() {
   useEffect(() => {
     const fetchEvent = async () => {
       try {
+        const eventId = localStorage.getItem('eventUUID')
+        console.log("Event Id "+eventId)
         const response = await axios.get(
-          "https://web.snoxpro.com/public/api/v1/gallery/a8f1cf41-8438-442e-8555-1f0863326ac1"
+          `https://web.snoxpro.com/public/api/v1/gallery/${eventId}`
         );
         setEventData(response.data.event); 
       } catch (err) {
@@ -35,7 +37,7 @@ function AuthPage() {
         "https://web.snoxpro.com/public/api/v1/auth/gallery/verify-pin/",
         {
           pin,
-          event_uuid:"a8f1cf41-8438-442e-8555-1f0863326ac1", 
+          event_uuid: localStorage.getItem('eventUUID'), 
         }
       );
   
