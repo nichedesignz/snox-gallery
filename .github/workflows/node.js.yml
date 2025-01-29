@@ -18,16 +18,17 @@ jobs:
       with:
         node-version: '20.x'
     
-    - name: Clean Install Dependencies
+    - name: Install dependencies with specific platform
       run: |
         npm cache clean --force
-        rm -rf node_modules
-        npm install
+        rm -rf node_modules package-lock.json
+        npm install --platform=linux --arch=x64 --libc=glibc
+        npm install @rollup/rollup-linux-x64-gnu
       
     - name: Build
       run: |
         npm run build
-        ls -la dist/ # Verify build output
+        ls -la dist/
     
     - name: Deploy to Server
       uses: appleboy/scp-action@v0.1.4
