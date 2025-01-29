@@ -1,11 +1,9 @@
 name: Node.js CI/CD
-
 on:
   push:
     branches: [ "master" ]
   pull_request:
     branches: [ "master" ]
-
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -30,6 +28,20 @@ jobs:
         npm run build
         ls -la dist/
     
+    - name: Backup and Deploy
+      uses: appleboy/ssh-action@v1.0.0
+      with:
+        host: ${{ secrets.SERVER_HOST }}
+        username: ${{ secrets.SERVER_USERNAME }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        script: |
+          # Create backup directory with timestamp
+          BACKUP_DIR="../backup/$(date +%d-%m-%Y-%H-%M-%S)"
+          mkdir -p "$BACKUP_DIR"
+          
+          # Backup current files
+          cp -r /home/snoxpro-gallery/htdocs/gallery.snoxpro.com/* "$BACKUP_DIR/"
+    
     - name: Deploy to Server
       uses: appleboy/scp-action@v0.1.4
       with:
@@ -39,15 +51,3 @@ jobs:
         source: "dist/*"
         target: "/home/snoxpro-gallery/htdocs/gallery.snoxpro.com"
         strip_components: 1
-    
-    - name: Restart PM2
-      uses: appleboy/ssh-action@v1.0.0
-      with:
-        host: ${{ secrets.SERVER_HOST }}
-        username: ${{ secrets.SERVER_USERNAME }}
-        key: ${{ secrets.SSH_PRIVATE_KEY }}
-        script: |
-          export NVM_DIR="$HOME/.nvm"
-          [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-          pm2 list || pm2 start app.py --name snox_photoselection
-          pm2 restart snox_photoselection
