@@ -13,10 +13,12 @@ function IndexPage() {
   
     const fetchEvent = async () => {
       try {
+
         setLoading(true);
+        const eventId = localStorage.getItem('eventUUID')
+        console.log("Event Id "+eventId)
         const response = await fetch(
-          'https://web.snoxpro.com/public/api/v1/gallery/a8f1cf41-8438-442e-8555-1f0863326ac1'
-        );
+`https://web.snoxpro.com/public/api/v1/gallery/${eventId}`);
         if (!response.ok) throw new Error('Failed to fetch event data');
         const data = await response.json();
         setEventData(data);

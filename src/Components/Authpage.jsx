@@ -16,6 +16,7 @@ function AuthPage() {
       try {
         const eventId = localStorage.getItem('eventUUID')
         console.log("Event Id "+eventId)
+        
         const response = await axios.get(
           `https://web.snoxpro.com/public/api/v1/gallery/${eventId}`
         );
@@ -75,7 +76,7 @@ function AuthPage() {
       ></div>
 
       <div className="content" style={{ zIndex: 2 }}>
-        {/* Display dynamic title from eventData */}
+     
         <h2 className="title">
           {eventData ? `${eventData.bride_name} & ${eventData.groom_name}` : "Loading..."}
         </h2>
@@ -86,14 +87,14 @@ function AuthPage() {
             className="input"
             placeholder="Enter PIN here"
             value={pin}
-            onChange={(e) => setPin(e.target.value)} // Update PIN state on input change
+            onChange={(e) => setPin(e.target.value)}
           />
           <button type="submit" className="button">
             CONTINUE
           </button>
         </form>
 
-        {error && <p className="error-message">{error}</p>} {/* Display error message */}
+        {error && <p className="error-message">{error}</p>}
       </div>
     </div>
   );
