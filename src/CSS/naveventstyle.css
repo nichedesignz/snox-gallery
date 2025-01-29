@@ -1,54 +1,55 @@
 .albumnav {
-  display: flex;
-  overflow-x: auto;
-  white-space: nowrap;
-  padding: 15px 10px;
-  border-top: 1px solid #ddd;
-  border-bottom: 1px solid #ddd;
-  margin-top: 20px;
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-
-.horizontal-line {
-  width: 100%;
-  height: 1px;
-  background-color: #ddd;
-  margin: 5px 0;
-}
-
-.albumnavlink {
-  background: #f7f7f7;
-  color: #171616;
-  font-size: 15px;
-  border-radius: 15px;
-  padding: 5px 20px;
-  margin: 0 8px 0 0;
-  border: 1px solid #ddd;
-  flex-shrink: 0;
-  text-decoration: none;
-  display: inline-block;
-  text-align: center;
-}
-
-.albumnavlink:hover::after {
-
-  position: absolute;
-  bottom: 0; 
-  left: 50%; 
-  transform: translateX(-50%); 
-  width: 100%; 
-  height: 5px; 
-  background-color: #343300; 
-
-}
-
-
-
-
-.albumnavlink:focus, .albumnavlink:active {
-  border-bottom: 5px solid #000000;
-  color: #000000; 
-  font-weight: 800; 
-  outline: none; 
-}
+    display: flex;
+    overflow-x: auto;
+    white-space: nowrap;
+    padding: 15px 10px;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    margin-top: 20px;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  
+  .horizontal-line {
+    width: 100%;
+    height: 1px;
+    background-color: #ddd;
+    margin: 5px 0;
+  }
+  
+  .albumnavlink {
+    background: #f7f7f7;
+    color: #171616;
+    font-size: 15px;
+    font-family: sans-serif;
+    border-radius: 15px;
+    padding: 5px 20px;
+    margin: 0 8px 0 0;
+    border: 1px solid #ddd;
+    flex-shrink: 0;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+  }
+  
+  .albumnavlink:hover::after {
+  
+    position: absolute;
+    bottom: 0; 
+    left: 50%; 
+    transform: translateX(-50%); 
+    width: 100%; 
+    height: 5px; 
+    background-color: #343300; 
+  
+  }
+  
+  
+  
+  
+  .albumnavlink:focus, .albumnavlink:active {
+    border-bottom: 3px solid #000000;
+    color: #000000; 
+    font-weight: 700; 
+    outline: none; 
+  }

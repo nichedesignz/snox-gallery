@@ -1,163 +1,3 @@
-// import React, { useEffect, useState ,useRef} from 'react';
-// import { NavLink } from 'react-router';
-// import { Link } from 'react-router';
-// import '../CSS/photogallery.css';
-// import image1 from '../assets/indeximage.jpg';
-// import download from '../assets/download.png';
-// import nextArrow from '../assets/next.png';
-// import previousArrow from '../assets/back.png';
-
-// function Photogallery() {
-//     const [images, setImages] = useState([]);
-//     const [loading, setLoading] = useState(true) ;
-//     const [currentIndex, setCurrentIndex] = useState(null);
-//     const [openedImage, setOpenedImage] = useState(null);
-//     const galleryRef=useRef(null)
-//     const scrolltoGallery = () => {
-//       galleryRef.current?.scrollIntoView({ behavior: 'smooth' });
-//     };
-    
-//     // const [isFullscreen, setIsFullscreen] = useState(false);
-  
-//     // const toggleFullscreen = () => {
-//     //   if (isFullscreen) {
-//     //     handle.exit();
-//     //   } else {
-//     //     handle.enter();
-//     //   }
-//     //   setIsFullscreen(!isFullscreen);
-//     // };
-  
-//     useEffect(() => {
-//         const fetchImages = async () => {
-//             try {
-//                 const response = await fetch('/imageData.json');
-//                 if (!response.ok) {
-//                     throw new Error('Failed to fetch image data');
-//                 }
-//                 const data = await response.json();
-//                 setImages(data);
-//             } catch (error) {
-//                 console.error('Error fetching image data:', error);
-//             } finally {
-//                 setLoading(false);
-//             }
-//         };
-
-//         fetchImages();
-//     }, []);
-
-//     const handleImage = (index) => {
-//         setCurrentIndex(index);
-//         setOpenedImage(images[index]?.src);
-//     };
-
-//     const handleNext = () => {
-//         setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
-//         setOpenedImage(images[(currentIndex + 1) % images.length]?.src);
-//     };
-
-//     const handlePrevious = () => {
-//         setCurrentIndex((prevIndex) => (prevIndex === 0 ? images.length - 1 : prevIndex - 1));
-//         setOpenedImage(images[(currentIndex === 0 ? images.length - 1 : currentIndex - 1)]?.src);
-//     };
-
-//     const closeModal = () => {
-//         setCurrentIndex(null);
-//         setOpenedImage(null);
-//     };
-
-//     const handleDownload = () => {
-//         const link = document.createElement('a');
-//         link.href = openedImage;
-//         link.download = `Image_${currentIndex + 1}.jpg`;
-//         document.body.appendChild(link);
-//         link.click();
-//         document.body.removeChild(link);
-//     };
-
-//     return (
-//       <div className="parallax-wrapper">
-//       <div className="hero parallax-content">
-//           <div
-//               className="imagecontainer"
-//               style={{
-//                   backgroundImage: `url(${image1})`,
-//                   backgroundSize: 'cover',
-//                   backgroundPosition: 'center',
-//                   backgroundRepeat: 'no-repeat',
-//                   height: '85vh',
-//                   position: 'relative', 
-//               }}
-//           >
-//               <div className='button-container'>
-//                 <Link onClick={scrolltoGallery}> <button>OPEN GALLERY</button></Link> 
-               
-//               </div>
-//           </div>
-//       </div>
- 
-//             <div className="main-content">
-//                 <div className="hero__title">
-//                     <h1>STEFFY & NOBIN</h1>
-//                 </div>
-               
-
-//                 <div className="navbarmain"  ref={galleryRef}>
-                  
-//                     <NavLink to="#" className="nav-item" onClick={(e) => e.preventDefault()}>Haldi</NavLink>
-//                     <NavLink to="#" className="nav-item" onClick={(e) => e.preventDefault()}>Wedding</NavLink>
-//                     <NavLink to="#" className="nav-item" onClick={(e) => e.preventDefault()}>Reception</NavLink>
-//                 </div>
-
-//                 {loading ? (
-//                     <div className="loading">Loading images...</div>
-//                 ) : (
-                  
-//                     <div className="gallery-container">
-//                         {images.map((image, index) => (
-//                             <div key={image.id} className="gallery-item">
-//                                 <img
-//                                     src={image.src}
-//                                     alt={image.alt}
-//                                     className="img-fluid"
-//                                     onLoad={(e) => (e.target.style.opacity = 1)}
-//                                     style={{ opacity: 0, transition: 'opacity 0.3s ease-in-out' }}
-//                                     onClick={() => handleImage(index)}
-//                                 />
-//                             </div>
-//                         ))}
-//                     </div>
-//                 )}
-
-//                 {openedImage && (
-//                     <div className="openmodal" onClick={closeModal}>
-//                         <div className="openmodal-content" onClick={(e) => e.stopPropagation()}>
-//                             <button className="Gdownload-btn" onClick={handleDownload}>
-//                                 <img src={download} alt="Download" />
-//                             </button>
-//                             <button className="Gclose-btn" onClick={closeModal}>
-//                                 &times;
-//                             </button>
-               
-//                             <button className="Gprev-btn" onClick={handlePrevious}>
-//                                 <img src={previousArrow} alt="Previous" />
-//                             </button>
-//                             <img src={openedImage} alt="Full Image" className="openmodal-image" />
-//                             <button className="Gnext-btn" onClick={handleNext}>
-//                                 <img src={nextArrow} alt="Next" />
-//                             </button>
-//                         </div>
-//                     </div>
-//                 )}
-//             </div>
-//         </div>
-//     );
-// }
-
-
-// export default Photogallery;
-
 import React, { useEffect, useState, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { NavLink } from 'react-router';
@@ -404,3 +244,13 @@ function Photogallery() {
 }
 
 export default Photogallery;
+
+
+
+
+
+
+
+
+
+
