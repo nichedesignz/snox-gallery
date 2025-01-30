@@ -33,7 +33,7 @@ function IndexPage() {
   }, []);
 
   if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
+  if (error) return <div>No event</div>;
 
   return (
     <div className="indexpage">
