@@ -8,6 +8,7 @@
     margin-top: 20px;
     -ms-overflow-style: none;
     scrollbar-width: none;
+   
   }
   
   .horizontal-line {
@@ -21,6 +22,7 @@
     background: #f7f7f7;
     color: #171616;
     font-size: 15px;
+    cursor: pointer;
     font-family: sans-serif;
     border-radius: 15px;
     padding: 5px 20px;

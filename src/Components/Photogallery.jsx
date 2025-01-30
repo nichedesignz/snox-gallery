@@ -1,8 +1,9 @@
+
 import React, { useEffect, useState, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { NavLink } from 'react-router';
+import { NavLink } from "react-router";
 import axios from "axios";
-import logo from '../assets/logo.png'
+import logo from "../assets/logo.png";
 import "../CSS/photogallery.css";
 import download from "../assets/download.png";
 import nextArrow from "../assets/next.png";
@@ -12,7 +13,6 @@ const BASE_URL = "https://web.snoxpro.com/public/api/v1/gallery";
 
 function Photogallery() {
   const { event_uuid } = useParams();
-  
   const navigate = useNavigate();
   const [images, setImages] = useState([]);
   const [selectedGallery, setSelectedGallery] = useState(null);
@@ -23,6 +23,7 @@ function Photogallery() {
   const [eventDetails, setEventDetails] = useState(null);
   const [galleries, setGalleries] = useState([]);
   const [error, setError] = useState("");
+
   const galleryRef = useRef(null);
 
   const scrolltoGallery = () => {
@@ -34,35 +35,24 @@ function Photogallery() {
       setLoading(true);
       try {
         const token = localStorage.getItem("authToken");
-
         const response = await axios.get(`${BASE_URL}/${event_uuid}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          headers: { Authorization: `Bearer ${token}` },
         });
 
         console.log("API Response:", response.data);
-
         setEventDetails(response.data.event);
         setGalleries(response.data.galleries);
         setGalleryTitle(response.data.event.title);
-        
-      
+
         if (response.data.galleries.length > 0) {
           const firstGalleryUuid = response.data.galleries[0].uuid;
           setSelectedGallery(firstGalleryUuid);
           const imagesResponse = await axios.get(
             `${BASE_URL}/images/${firstGalleryUuid}`,
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-            }
+            { headers: { Authorization: `Bearer ${token}` } }
           );
-  
           setImages(imagesResponse.data.results || []);
         }
-          
       } catch (err) {
         setError("Failed to load event details.");
         console.error("Error fetching event data:", err);
@@ -74,26 +64,15 @@ function Photogallery() {
     fetchEventData();
   }, [event_uuid]);
 
-
-  if (loading) {
-    return (
-      <div className="loader-wrapper">
-        <div className="loader"></div>
-      </div>
-    );
-  }
-  
   const handleGalleryClick = async (galleryUuid) => {
     try {
       const token = localStorage.getItem("authToken");
       const response = await axios.get(`${BASE_URL}/images/${galleryUuid}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
       });
       setSelectedGallery(galleryUuid);
-      setImages(response.data.results); 
-      setOpenedImage(null); 
+      setImages(response.data.results);
+      setOpenedImage(null);
       setCurrentIndex(null);
     } catch (err) {
       setError("Failed to load gallery images.");
@@ -126,26 +105,26 @@ function Photogallery() {
     setOpenedImage(null);
   };
 
+ 
   const handleDownload = () => {
-    const link = document.createElement("a");
-    link.href = openedImage;
-    link.download = `Image_${currentIndex + 1}.jpg`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  };
-
+         const link = document.createElement('a');
+         link.href = openedImage;
+         link.download = `Image_${currentIndex + 1}.jpeg`;
+         document.body.appendChild(link);
+         link.click();
+         document.body.removeChild(link);
+     };
   if (loading) {
-    return <div>Loading event details...</div>;
-  }
-
-  if (error) {
-    return <div>{error}</div>;
-  }
+    return (
+        <div className="loader-wrapper">
+            <div className="loader"></div>
+        </div>
+    );
+}
+if (error) return <div>{error}</div>;
 
   return (
     <div className="parallax-wrapper">
-    
       <div className="hero parallax-content">
         <div
           className="imagecontainer"
@@ -168,32 +147,30 @@ function Photogallery() {
         <div className="hero__title">
           <h1>{galleryTitle}</h1>
           <div>
-        <img className="logostylePG" src={logo} alt="Logo" />
-      </div>
+            <img className="logostylePG" src={logo} alt="Logo" />
+          </div>
         </div>
 
-        {loading ? (
-          <div className="loading">Loading images...</div>
-        ) : (
-          <div className="navbarmain" ref={galleryRef}>
-            {galleries.length > 0 ? (
-              galleries.map((gallery) => (
-                <div key={gallery.uuid}>
-                  <NavLink 
-                    className={`nav-item ${selectedGallery === gallery.uuid ? "selected" : ""}`}
-                    onClick={() => handleGalleryClick(gallery.uuid)}
-                  >
-                    {gallery.name}
-                  </NavLink>
-                </div>
-              ))
-            ) : (
-              <p>No galleries found for this event.</p>
-            )}
-          </div>
-        )}
+        <div className="navbarmain" ref={galleryRef}>
+          {galleries.length > 0 ? (
+            galleries.map((gallery) => (
+              <div key={gallery.uuid}>
+                <NavLink
+                  className={`nav-item ${
+                    selectedGallery === gallery.uuid ? "selected" : ""
+                  }`}
+                  onClick={() => handleGalleryClick(gallery.uuid)}
+                >
+                  {gallery.name}
+                </NavLink>
+              </div>
+            ))
+          ) : (
+            <p>No galleries found for this event.</p>
+          )}
+        </div>
 
-        <div className="gallery-container">
+        {/* <div className="gallery-container">
           {images.length > 0 ? (
             images.map((image, index) => (
               <div key={image.uuid} className="gallery-item">
@@ -209,29 +186,38 @@ function Photogallery() {
           ) : (
             <p>No images available for this gallery.</p>
           )}
-        </div>
+        </div> */}
+<div
+  className={`gallery-container ${images.length > 50 ? 'more-than-50' : 'less-than-50'}`}
+>
+  {images.length > 0 ? (
+    images.map((image, index) => (
+      <div key={image.uuid} className="gallery-item">
+        <img
+          src={image.image_url}
+          alt={`Image ${index + 1}`}
+          className="img-fluid"
+          onClick={() => handleImage(index)}
+          style={{ cursor: "pointer" }}
+        />
+      </div>
+    ))
+  ) : (
+    <p>No images available for this gallery.</p>
+  )}
+</div>
 
         {openedImage && (
           <div className="openmodal" onClick={closeModal}>
-            <div
-              className="openmodal-content"
-              onClick={(e) => e.stopPropagation()}
-            >
+            <div className="openmodal-content" onClick={(e) => e.stopPropagation()}>
               <button className="Gdownload-btn" onClick={handleDownload}>
                 <img src={download} alt="Download" />
               </button>
-              <button className="Gclose-btn" onClick={closeModal}>
-                &times;
-              </button>
-
+              <button className="Gclose-btn" onClick={closeModal}>&times;</button>
               <button className="Gprev-btn" onClick={handlePrevious}>
                 <img src={previousArrow} alt="Previous" />
               </button>
-              <img
-                src={openedImage}
-                alt="Full Image"
-                className="openmodal-image"
-              />
+              <img src={openedImage} alt="Full Image" className="openmodal-image" />
               <button className="Gnext-btn" onClick={handleNext}>
                 <img src={nextArrow} alt="Next" />
               </button>
@@ -244,13 +230,3 @@ function Photogallery() {
 }
 
 export default Photogallery;
-
-
-
-
-
-
-
-
-
-
