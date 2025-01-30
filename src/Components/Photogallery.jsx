@@ -198,7 +198,7 @@ function Photogallery() {
             images.map((image, index) => (
               <div key={image.uuid} className="gallery-item">
                 <img
-                  src={image.image_url_thumb}
+                  src={image.image_url}
                   alt={`Image ${index + 1}`}
                   className="img-fluid"
                   onClick={() => handleImage(index)}

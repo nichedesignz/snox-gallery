@@ -310,7 +310,7 @@ transform: translateX(0);
 
 .gallery-container {
   padding:20px;
-  column-count: 3; 
+  column-count: 4; 
   column-gap: 10px;
 }
 

@@ -334,6 +334,7 @@ const Gallery = () => {
             setImages(response.data.results); 
             setOpenedImage(null); 
             setCurrentIndex(null); 
+            
         } catch (err) {
             setError("Failed to load gallery images.");
             console.error("Error fetching gallery images:", err);
@@ -401,20 +402,31 @@ const Gallery = () => {
     console.log("Gallery UUID:", selectedGallery);
     console.log("Selected Images:", selectedImages);
 
+    function filterSlectedIds(){
+            const selectedUuids = Object.keys(selected[selectedGallery] || {}).filter(
+                (imageUuid) => selected[selectedGallery][imageUuid]
+            );
+        
+            const selectedImageIds = images.filter(image => selectedUuids.includes(image.uuid))
+            .map(image => image.id);
+
+        return selectedImageIds;
+    }
+
     try {
         const token = localStorage.getItem('authSelToken');
+        const ids = filterSlectedIds();
+        console.log("ids " + filterSlectedIds())
+        const payload = {"selected_photos" : ids}
+
         const response = await axios.post(
-            `${BASE_URL}/submit/${selectedGallery}/`,
-            {
-                galleryUuid: selectedGallery,
-                image_uuids: selectedImages,
-            },
+            `${BASE_URL}/submit/${selectedGallery}/`,payload,
             {
                 headers: { Authorization: `Bearer ${token}` },
             }
         );
 
-        // console.log("Server Response:", response.data);
+        console.log("Server Response:", response.data);
 
         // alert("Images submitted successfully!");
 
@@ -479,7 +491,7 @@ const Gallery = () => {
                     {images.map((image, index) => (
                         <div key={image.uuid} className="masonry-item" style={{ position: 'relative' }}>
                             <img
-                                src={image.image_url_thumb}
+                                src={image.image_url}
                                 alt={`Image ${index + 1}`}
                                 className="img-fluid"
                                 onClick={() => handleImage(index)}

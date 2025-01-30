@@ -148,7 +148,7 @@
 
   }.masonry-container {
     padding:20px;
-    column-count: 6; 
+    column-count: 4; 
     column-gap: 10px;
   }
   
