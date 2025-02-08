@@ -55,3 +55,10 @@
     font-weight: 700; 
     outline: none; 
   }
+
+  .albumnavlink.selected {
+    border-bottom: 3px solid #000000;
+    color: #000000; 
+    font-weight: bold;
+  
+}

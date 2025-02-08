@@ -6,6 +6,38 @@
   font-weight: 400;
   font-style: normal;
 }
+.load-more-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+.lazy-image-container {
+  position: relative;
+}
+
+.skeleton-loader {
+  background-color: #e0e0e0;
+  width: 100%;
+  height: 200px; 
+  animation: pulse 6s infinite ease-in-out;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 0.9;
+  }
+  50% {
+    opacity: 0.4;
+  }
+  100% {
+    opacity: 0.8;
+  }
+}
+
+.fade-in {
+  opacity: 1 !important;
+  transition: opacity 0.3s ease-in-out;
+}
 
 .playwrite-hu {
   font-family: "Playwrite HU", serif;
@@ -72,16 +104,17 @@ transform: translateX(0);
   }
 }
 .pagination-buttons {
-  position: fixed;
+
   bottom: 20px;
-  right: 20px;
+  right: 50px;
   display: flex;
+justify-content: center;
   gap: 20px; 
   z-index: 1000;
 }
 
 .pagination-btn {
-  background-color: #007bff; 
+  background-color: #1d2b39; 
   color: white;             
   padding: 10px 20px;        
   border: none;
@@ -96,7 +129,7 @@ transform: translateX(0);
 }
 
 .pagination-btn:hover {
-  background-color: #0056b3;
+  background-color: #25303c;
 }
 
 .pagination-btn:disabled {
