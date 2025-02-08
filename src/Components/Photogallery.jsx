@@ -70,22 +70,48 @@ function Photogallery() {
     }
   }, [selectedGallery, offset]);
 
-  const fetchGalleryImages = async (galleryUuid, newOffset) => {
+  const fetchGalleryImages = async (galleryUuid) => {
     try {
       const token = localStorage.getItem("authToken");
-      const response = await axios.get(`${BASE_URL}/images/${galleryUuid}`, {
-        headers: { Authorization: `Bearer ${token}` },
-        params: { offset: newOffset, limit },
-      });
-      setImages(response.data.results);
-      setOffset(newOffset);
+      let allImages = [];
+      let currentOffset = 0;
+      const limit = 50; // Assuming 50 is the page size
+      let totalCount = null;
+  
+      do {
+        const response = await axios.get(`${BASE_URL}/images/${galleryUuid}`, {
+          headers: { Authorization: `Bearer ${token}` },
+          params: { offset: currentOffset, limit },
+        });
+  
+        if (totalCount === null) {
+          totalCount = response.data.count; // Total images count from API
+          console.log("Total images: " + totalCount);
+        }
+  
+        console.log(
+          "Fetched images part: " +
+            currentOffset +
+            " to " +
+            (currentOffset + limit)
+        );
+  
+        allImages = allImages.concat(response.data.results); 
+        currentOffset += limit;
+  
+      } while (currentOffset < totalCount);
+  
+      setImages(allImages); 
       setOpenedImage(null);
       setCurrentIndex(null);
+      setOffset(0); 
+  
     } catch (err) {
       setError("Failed to load gallery images.");
       console.error("Error fetching gallery images:", err);
     }
   };
+  
   const handleGalleryClick = (galleryUuid) => {
     setSelectedGallery(galleryUuid);
     setOffset(0);
@@ -232,10 +258,7 @@ if (error) return <div>{error}</div>;
   )}
   
 </div>
-<div className="pagination-buttons">
-          <button className="pagination-btn" onClick={handlePreviousPage} disabled={offset === 0}>Previous</button>
-          <button  className="pagination-btn" onClick={handleNextPage} disabled={images.length < limit}>Next</button>
-        </div>
+
         {openedImage && (
           <div className="openmodal" onClick={closeModal}>
             <div className="openmodal-content" onClick={(e) => e.stopPropagation()}>
