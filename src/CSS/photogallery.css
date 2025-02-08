@@ -292,11 +292,11 @@ top: 30px;
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  font-family: 'Tinos', serif;
+  font-family: 'Tinos';
   padding: 10px 20px;
   overflow-x: auto; 
   white-space: nowrap; 
-  gap: 15px;
+ 
   scrollbar-width: thin;
 }
 
@@ -315,9 +315,9 @@ top: 30px;
 
 .nav-item {
   color: black;
-  font-size: 1rem; 
-  margin: 0; 
-  padding: 0 15px; 
+  font-size:larger; 
+  margin: 0 15px; 
+ 
   text-decoration: none;
   position: relative;
   transition: color 0.3s ease, font-weight 0.3s ease; 

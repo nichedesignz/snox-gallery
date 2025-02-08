@@ -70,13 +70,61 @@ function Photogallery() {
     }
   }, [selectedGallery, offset]);
 
-  const fetchGalleryImages = async (galleryUuid) => {
+  // const fetchGalleryImages = async (galleryUuid) => {
+  //   try {
+  //     setLoadingGallery(true);
+  //     const token = localStorage.getItem("authToken");
+  //     let allImages = [];
+  //     let currentOffset = 0;
+  //     const limit = 50; 
+  //     let totalCount = null;
+  
+  //     do {
+  //       const response = await axios.get(`${BASE_URL}/images/${galleryUuid}`, {
+  //         headers: { Authorization: `Bearer ${token}` },
+  //         params: { offset: currentOffset, limit },
+  //       });
+  
+  //       if (totalCount === null) {
+  //         totalCount = response.data.count; 
+  //         console.log("Total images: " + totalCount);
+  //       }
+  
+  //       console.log(
+  //         "Fetched images part: " +
+  //           currentOffset +
+  //           " to " +
+  //           (currentOffset + limit)
+  //       );
+  
+  //       allImages = allImages.concat(response.data.results); 
+  //       currentOffset += limit;
+  
+  //     } while (currentOffset < totalCount);
+  
+  //     setImages(allImages); 
+  //     setOpenedImage(null);
+  //     setCurrentIndex(null);
+  //     setOffset(0); 
+  
+  //   } catch (err) {
+  //     setError("Failed to load gallery images.");
+  //     console.error("Error fetching gallery images:", err);
+  //   }
+  //   finally {
+  //     setTimeout(() => {
+  //       setLoadingGallery(false);
+  //     }, 500); 
+  //   }
+  // };
+  
+  const fetchGalleryImages = async (galleryUuid, newOffset) => {
     try {
       setLoadingGallery(true);
       const token = localStorage.getItem("authToken");
       let allImages = [];
       let currentOffset = 0;
-      const limit = 50; 
+      // const limit = 50; 
       let totalCount = null;
   
       do {
@@ -97,15 +145,15 @@ function Photogallery() {
             (currentOffset + limit)
         );
   
-        allImages = allImages.concat(response.data.results); 
+        allImages = [...allImages, ...response.data.results];
         currentOffset += limit;
   
       } while (currentOffset < totalCount);
-  
+      setOffset(newOffset);
       setImages(allImages); 
       setOpenedImage(null);
       setCurrentIndex(null);
-      setOffset(0); 
+      // setOffset(0); 
   
     } catch (err) {
       setError("Failed to load gallery images.");
@@ -117,7 +165,6 @@ function Photogallery() {
       }, 500); 
     }
   };
-  
   const handleGalleryClick = (galleryUuid) => {
     setSelectedGallery(galleryUuid);
     setOffset(0);
