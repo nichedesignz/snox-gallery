@@ -286,22 +286,42 @@ top: 30px;
   font-weight: bold;
   color: #333;
 }
-.navbarmain{
+.navbarmain {
   background-color: #f2f5e1;
   height: 8vh;
   display: flex;
   align-items: center;
-font-family:'Tinos';
-padding: 10px 20px;
-
+  justify-content: flex-start;
+  font-family: 'Tinos', serif;
+  padding: 10px 20px;
+  overflow-x: auto; 
+  white-space: nowrap; 
+  gap: 15px;
+  scrollbar-width: thin;
 }
+
+.navbarmain::-webkit-scrollbar {
+  height: 6px; 
+}
+
+.navbarmain::-webkit-scrollbar-thumb {
+  background-color: #ccc; 
+  border-radius: 3px;
+}
+
+.navbarmain::-webkit-scrollbar-track {
+  background-color: #f2f5e1; 
+}
+
 .nav-item {
   color: black;
-  font-size: larger;
-  margin: 0 15px; 
-  text-decoration: none; 
+  font-size: 1rem; 
+  margin: 0; 
+  padding: 0 15px; 
+  text-decoration: none;
   position: relative;
-  transition: color 0.3s, font-weight 0.3s; 
+  transition: color 0.3s ease, font-weight 0.3s ease; 
+  border-radius: 5px;
 }
 
 .nav-item:hover {
