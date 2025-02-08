@@ -127,7 +127,7 @@ function Photogallery() {
  
   const handleDownload = () => {
          const link = document.createElement('a');
-         link.href = openedImage;
+         link.href = `https://web.snoxpro.com/proxy/download/?url=${openedImage}`;
          link.download = `Image_${currentIndex + 1}.jpeg`;
          document.body.appendChild(link);
          link.click();
