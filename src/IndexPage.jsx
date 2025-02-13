@@ -18,7 +18,7 @@ function IndexPage() {
         const eventId = localStorage.getItem('eventUUID')
         console.log("Event Id "+eventId)
         const response = await fetch(
-`https://web.snoxpro.com/public/api/v1/gallery/${eventId}`);
+        `https://web.snoxpro.com/public/api/v1/gallery/${eventId}`);
         if (!response.ok) throw new Error('Failed to fetch event data');
         const data = await response.json();
         setEventData(data);
@@ -32,7 +32,13 @@ function IndexPage() {
     fetchEvent();
   }, []);
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) {
+    return (
+        <div className="loader-wrapper">
+            <div className="loader"></div>
+        </div>
+    );
+}
   if (error) return <div>No event</div>;
 
   return (
@@ -49,6 +55,7 @@ function IndexPage() {
           width: '100%',
           objectFit: 'contain',
           backgroundSize: 'cover',
+        
           backgroundRepeat: 'no-repeat',
           backgroundPosition: 'center',
           display: 'flex',

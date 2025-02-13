@@ -8,7 +8,7 @@ const ProtectedRoute = ({ children }) => {
   localStorage.setItem('eventUUID', event_uuid)
 
   if (!isAuthenticated) {
-    return <Navigate to="/authpage" replace />; 
+    return <Navigate to="/" replace />; 
   }
 
   return children; 

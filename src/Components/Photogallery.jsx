@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { NavLink } from "react-router";
@@ -34,38 +33,55 @@ function Photogallery() {
   };
 
   useEffect(() => {
-    const fetchEventData = async () => {
-      setLoading(true);
-      try {
-        const token = localStorage.getItem("authToken");
-        const response = await axios.get(`${BASE_URL}/${event_uuid}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+  const fetchEventData = async () => {
+    setLoading(true);
 
-        console.log("API Response:", response.data);
-        setEventDetails(response.data.event);
-        setGalleries(response.data.galleries);
-        setGalleryTitle(response.data.event.title);
+    const token = localStorage.getItem("authToken");
+    const storedEventId = localStorage.getItem("lastEventUUID");
 
-        if (response.data.galleries.length > 0) {
-          const firstGalleryUuid = response.data.galleries[0].uuid;
-          setSelectedGallery(firstGalleryUuid);
-          const imagesResponse = await axios.get(
-            `${BASE_URL}/images/${firstGalleryUuid}`,
-            { headers: { Authorization: `Bearer ${token}` } }
-          );
-          setImages(imagesResponse.data.results || []);
-        }
-      } catch (err) {
-        setError("Failed to load event details.");
-        console.error("Error fetching event data:", err);
-      } finally {
-        setLoading(false);
+   
+    // console.log("Current event_uuid", event_uuid);
+    // console.log("Stored lastEventUUID:", storedEventId);
+
+    if (event_uuid !== storedEventId) {
+      console.warn("Event ID mismatch! ");
+      localStorage.removeItem("authToken");
+      localStorage.setItem("lastEventUUID", event_uuid);
+      navigate("/"); 
+      return; 
+    }
+
+    try {
+      const response = await axios.get(`${BASE_URL}/${event_uuid}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      // console.log("API Response:", response.data);
+      setEventDetails(response.data.event);
+      setGalleries(response.data.galleries);
+      setGalleryTitle(response.data.event.title);
+
+      if (response.data.galleries.length > 0) {
+        const firstGalleryUuid = response.data.galleries[0].uuid;
+        setSelectedGallery(firstGalleryUuid);
+
+        const imagesResponse = await axios.get(
+          `${BASE_URL}/images/${firstGalleryUuid}`,
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+        setImages(imagesResponse.data.results || []);
       }
-    };
+    } catch (err) {
+      setError("Failed to load event details.");
+      console.error("Error fetching event data:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    fetchEventData();
-  }, [event_uuid]);
+  fetchEventData();
+}, [event_uuid]); 
+
 
   useEffect(() => {
     if (selectedGallery) {
