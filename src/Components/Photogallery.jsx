@@ -39,10 +39,6 @@ function Photogallery() {
     const token = localStorage.getItem("authToken");
     const storedEventId = localStorage.getItem("lastEventUUID");
 
-   
-    // console.log("Current event_uuid", event_uuid);
-    // console.log("Stored lastEventUUID:", storedEventId);
-
     if (event_uuid !== storedEventId) {
       console.warn("Event ID mismatch! ");
       localStorage.removeItem("authToken");
@@ -89,54 +85,6 @@ function Photogallery() {
     }
   }, [selectedGallery, offset]);
 
-  // const fetchGalleryImages = async (galleryUuid) => {
-  //   try {
-  //     setLoadingGallery(true);
-  //     const token = localStorage.getItem("authToken");
-  //     let allImages = [];
-  //     let currentOffset = 0;
-  //     const limit = 50; 
-  //     let totalCount = null;
-  
-  //     do {
-  //       const response = await axios.get(`${BASE_URL}/images/${galleryUuid}`, {
-  //         headers: { Authorization: `Bearer ${token}` },
-  //         params: { offset: currentOffset, limit },
-  //       });
-  
-  //       if (totalCount === null) {
-  //         totalCount = response.data.count; 
-  //         console.log("Total images: " + totalCount);
-  //       }
-  
-  //       console.log(
-  //         "Fetched images part: " +
-  //           currentOffset +
-  //           " to " +
-  //           (currentOffset + limit)
-  //       );
-  
-  //       allImages = allImages.concat(response.data.results); 
-  //       currentOffset += limit;
-  
-  //     } while (currentOffset < totalCount);
-  
-  //     setImages(allImages); 
-  //     setOpenedImage(null);
-  //     setCurrentIndex(null);
-  //     setOffset(0); 
-  
-  //   } catch (err) {
-  //     setError("Failed to load gallery images.");
-  //     console.error("Error fetching gallery images:", err);
-  //   }
-  //   finally {
-  //     setTimeout(() => {
-  //       setLoadingGallery(false);
-  //     }, 500); 
-  //   }
-  // };
-  
   useEffect(() => {
   const loadImages = async () => {
     const newImageClasses = {};
@@ -314,26 +262,6 @@ if (error) return <div>{error}</div>;
           )}
         </div>
 
-        {/* <div className="gallery-container">
-          {images.length > 0 ? (
-            images.map((image, index) => (
-              <div key={image.uuid} className="gallery-item">
-                <img
-                  src={image.image_url}
-                  alt={`Image ${index + 1}`}
-                  className="img-fluid"
-                  onClick={() => handleImage(index)}
-                  style={{ cursor: "pointer" }}
-                />
-              </div>
-            ))
-          ) : (
-            <p>No images available for this gallery.</p>
-          )}
-        </div> */}
-{/* <div
-  className={`gallery-container ${images.length > 50 ? 'more-than-50' : 'less-than-50'}`}
-> */}
 
 <div>
   {loadingGallery ? (
