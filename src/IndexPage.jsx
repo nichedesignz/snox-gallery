@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import '../src/CSS/indexpagestyle.css';
 import logo from '../src/assets/logo.png';
-
+import CONFIG from '/src/config';
 function IndexPage() {
   const [eventData, setEventData] = useState(null); 
   const [loading, setLoading] = useState(true);
@@ -17,11 +17,11 @@ function IndexPage() {
         setLoading(true);
         const eventId = localStorage.getItem('eventUUID')
         console.log("Event Id "+eventId)
-        const response = await fetch(
-        `https://web.snoxpro.com/public/api/v1/gallery/${eventId}`);
+        const response = await fetch(`${CONFIG.API_BASE_URL}public/api/v1/gallery/${eventId}/`);
         if (!response.ok) throw new Error('Failed to fetch event data');
         const data = await response.json();
-        setEventData(data);
+        console.log(data)
+        if(data.result) setEventData(data.data);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -50,7 +50,7 @@ function IndexPage() {
         className="zoom-in-out-element"
         style={{
           position: 'relative',
-          backgroundImage: `url(${eventData.event.image})`,
+          backgroundImage: `url(${eventData.event.cover_image})`,
           height: '100vh',
           width: '100%',
           objectFit: 'contain',

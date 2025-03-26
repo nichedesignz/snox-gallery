@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import {useParams} from 'react-router-dom';
 import download from '../assets/download.png';
 import nextArrow from '../assets/next.png';
 import previousArrow from '../assets/back.png';
@@ -9,12 +9,13 @@ import '../CSS/gallerystyle.css';
 import '../CSS/naveventstyle.css';
 import logo from '../assets/logo.png';
 import Swal from 'sweetalert2';
+import CONFIG from '../config';
 
-const BASE_URL = "https://web.snoxpro.com/public/api/v1/selection";
+const BASE_URL = `${CONFIG.API_BASE_URL}public/api/v1/selection`;
 
 const Gallery = () => {
     const [eventDetails, setEventDetails] = useState(null);
-    const { event_uuid } = useParams();
+    const { event_id } = useParams();
     const [galleries, setGalleries] = useState([]);
     const [selectedGallery, setSelectedGallery] = useState(null);
     const [images, setImages] = useState([]);
@@ -32,25 +33,29 @@ const Gallery = () => {
         const fetchEventData = async () => {
             try {
                 const token = localStorage.getItem('authSelToken');
-                const response = await axios.get(`${BASE_URL}/${event_uuid}`, {
+                const response = await axios.get(`${BASE_URL}/${event_id}/`, {
                     headers: { Authorization: `Bearer ${token}` },
                 });
-                setEventDetails(response.data.event);
-                setGalleries(response.data.galleries);
+                console.log(response);
+                if(response.data.result) {
+                    const data = response.data.data;
+                    console.log(data)
+                    setEventDetails(data.event);
+                    setGalleries(data.galleries);
 
-                if (response.data.galleries.length > 0) {
-                    handleGalleryClick(response.data.galleries[0].uuid);
-                } else {
-                    setLoading(false);
+                    if (data.galleries.length > 0) {
+                        handleGalleryClick(data.galleries[0].id);
+                    } else {
+                        setLoading(false);
+                    }
+
+                    const gallerySelections = data.galleries.reduce((acc, gallery) => {
+                        acc[gallery.id] = gallery.selection_info?.max_selections ?? 25;
+                        return acc;
+                    }, {});
+                    console.log(gallerySelections)
+                    setMaxSelection(gallerySelections);
                 }
-
-                const gallerySelections = response.data.galleries.reduce((acc, gallery) => {
-                    const maxSelection = gallery.selection_info?.max_selection ?? 25;
-                    acc[gallery.uuid] = maxSelection;
-                    return acc;
-                }, {});
-
-                setMaxSelection(gallerySelections);
             } catch (err) {
                 setError("Failed to load galleries.");
                 console.error("Error fetching galleries:", err);
@@ -59,7 +64,7 @@ const Gallery = () => {
         };
 
         fetchEventData();
-    }, [event_uuid]);
+    }, [event_id]);
 
     const handleSelectedOption = (option) => {
         setSelectedOption(option);
@@ -77,16 +82,16 @@ const Gallery = () => {
                     headers: { Authorization: `Bearer ${token}` },
                     params: { offset: currentOffset, limit },
                 });
-
+                console.log(response)
                 if (totalCount === null) {
-                    totalCount = response.data.count;
+                    totalCount = response.data.data.count;
                 }
 
-                allImages = [...allImages, ...response.data.results];
+                allImages = [...allImages, ...response.data.data.results];
                 currentOffset += limit;
             } while (currentOffset < totalCount);
 
-            const galleryInfo = galleries.find(g => g.uuid === galleryUuid);
+            const galleryInfo = galleries.find(g => g.id === galleryUuid);
             if (galleryInfo?.selection_info?.is_locked) {
                 Swal.fire({
                     icon: 'warning',
@@ -117,7 +122,7 @@ const Gallery = () => {
     }
 
     const handleToggleSelection = (imageUuid) => {
-        const galleryInfo = galleries.find(g => g.uuid === selectedGallery);
+        const galleryInfo = galleries.find(g => g.id === selectedGallery);
 
         if (galleryInfo?.selection_info?.is_locked) {
             Swal.fire({
@@ -130,7 +135,7 @@ const Gallery = () => {
         }
 
         const selectedCount = images.filter(img => img.is_selected).length;
-        const imageData = images.find(img => img.uuid === imageUuid);
+        const imageData = images.find(img => img.id === imageUuid);
         const isCurrentlySelected = imageData.is_selected;
         const maxAllowed = maxSelection[selectedGallery] || 25;
 
@@ -146,7 +151,7 @@ const Gallery = () => {
 
         setImages(prevImages =>
             prevImages.map(img =>
-                img.uuid === imageUuid
+                img.id === imageUuid
                     ? { ...img, is_selected: !img.is_selected }
                     : img
             )
@@ -157,12 +162,12 @@ const Gallery = () => {
 
     const handleImage = (index) => {
         setCurrentIndex(index);
-        setOpenedImage(images[index]?.image_url);
+        setOpenedImage(images[index]?.small.url);
     };
 
     const handleNext = () => {
         setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
-        setOpenedImage(images[(currentIndex + 1) % images.length]?.image_url);
+        setOpenedImage(images[(currentIndex + 1) % images.length]?.small.url);
     };
 
     const handlePrevious = () => {
@@ -170,7 +175,7 @@ const Gallery = () => {
             prevIndex === 0 ? images.length - 1 : prevIndex - 1
         );
         setOpenedImage(
-            images[currentIndex === 0 ? images.length - 1 : currentIndex - 1]?.image_url
+            images[currentIndex === 0 ? images.length - 1 : currentIndex - 1]?.small.url
         );
     };
 
@@ -191,7 +196,7 @@ const Gallery = () => {
     const handleSend = async () => {
         if (!selectedGallery) return;
 
-        const galleryInfo = galleries.find(g => g.uuid === selectedGallery);
+        const galleryInfo = galleries.find(g => g.id === selectedGallery);
 
         if (galleryInfo?.selection_info?.is_locked) {
             Swal.fire({
@@ -259,9 +264,9 @@ const Gallery = () => {
             <div className="albumnav">
                 {galleries.map((gallery) => (
                     <button
-                        key={gallery.uuid}
-                        className={`albumnavlink ${selectedGallery === gallery.uuid ? 'selected' : ""}`}
-                        onClick={() => handleGalleryClick(gallery.uuid)}
+                        key={gallery.id}
+                        className={`albumnavlink ${selectedGallery === gallery.id ? 'selected' : ""}`}
+                        onClick={() => handleGalleryClick(gallery.id)}
                     >
                         {gallery.name}
                     </button>
@@ -286,22 +291,22 @@ const Gallery = () => {
             {selectedOption === 'allphotos' ? (
                 <div className="masonry-container">
                     {images.map((image, index) => (
-                        <div key={image.uuid} className="masonry-item" style={{ position: 'relative' }}>
+                        <div key={image.id} className="masonry-item" style={{ position: 'relative' }}>
                             <img
-                                src={image.image_url}
+                                src={image.small.url}
                                 alt={`Image ${index + 1}`}
                                 className="img-fluid"
                                 onLoad={() =>
-                                    setImageLoaded((prev) => ({ ...prev, [image.uuid]: true }))
+                                    setImageLoaded((prev) => ({ ...prev, [image.id]: true }))
                                 }
                                 style={{
-                                    opacity: imageLoaded[image.uuid] ? 1 : 0,
+                                    opacity: imageLoaded[image.id] ? 1 : 0,
                                     transition: 'opacity 0.3s ease-in-out'
                                 }}
                                 onClick={() => handleImage(index)}
                             />
 
-                            {imageLoaded[image.uuid] && (
+                            {imageLoaded[image.id] && (
                                 <div
                                     className="checkbox-wrapper-18"
                                     style={{
@@ -314,11 +319,11 @@ const Gallery = () => {
                                     <div className="round">
                                         <input
                                             type="checkbox"
-                                            id={`checkbox-${image.uuid}`}
+                                            id={`checkbox-${image.id}`}
                                             checked={image.is_selected || false}
-                                            onChange={() => handleToggleSelection(image.uuid)}
+                                            onChange={() => handleToggleSelection(image.id)}
                                         />
-                                        <label htmlFor={`checkbox-${image.uuid}`}></label>
+                                        <label htmlFor={`checkbox-${image.id}`}></label>
                                     </div>
                                 </div>
                             )}
@@ -330,25 +335,25 @@ const Gallery = () => {
                     {images
                         .filter((image) => image.is_selected)
                         .map((image, index) => (
-                            <div key={image.uuid} className="masonry-item" style={{ position: 'relative' }}>
+                            <div key={image.id} className="masonry-item" style={{ position: 'relative' }}>
                                 <img
-                                    src={image.image_url}
+                                    src={image.small.url}
                                     alt={`Selected Image ${index + 1}`}
                                     className="img-fluid"
                                     onLoad={() =>
-                                        setImageLoaded((prev) => ({ ...prev, [image.uuid]: true }))
+                                        setImageLoaded((prev) => ({ ...prev, [image.id]: true }))
                                     }
                                     style={{
-                                        opacity: imageLoaded[image.uuid] ? 1 : 0,
+                                        opacity: imageLoaded[image.id] ? 1 : 0,
                                         transition: 'opacity 0.3s ease-in-out'
                                     }}
                                     onClick={() => {
-                                        const fullIndex = images.findIndex(img => img.uuid === image.uuid);
+                                        const fullIndex = images.findIndex(img => img.id === image.id);
                                         if (fullIndex !== -1) handleImage(fullIndex);
                                     }}
                                 />
 
-                                {imageLoaded[image.uuid] && (
+                                {imageLoaded[image.id] && (
                                     <div
                                         className="checkbox-wrapper-18"
                                         style={{
@@ -361,11 +366,11 @@ const Gallery = () => {
                                         <div className="round">
                                             <input
                                                 type="checkbox"
-                                                id={`selected-checkbox-${image.uuid}`}
+                                                id={`selected-checkbox-${image.id}`}
                                                 checked={true}
-                                                onChange={() => handleToggleSelection(image.uuid)}
+                                                onChange={() => handleToggleSelection(image.id)}
                                             />
-                                            <label htmlFor={`selected-checkbox-${image.uuid}`}></label>
+                                            <label htmlFor={`selected-checkbox-${image.id}`}></label>
                                         </div>
                                     </div>
                                 )}
@@ -395,7 +400,7 @@ const Gallery = () => {
                         </button>
                         <button
                             className={`selecttick ${images[currentIndex]?.is_selected ? 'selected' : ''}`}
-                            onClick={() => images[currentIndex] && handleToggleSelection(images[currentIndex].uuid)}
+                            onClick={() => images[currentIndex] && handleToggleSelection(images[currentIndex].id)}
                         >
                             <img src={tick} alt="Select" />
                         </button>

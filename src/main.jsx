@@ -19,7 +19,7 @@ const router = createBrowserRouter([
   { path: "/authpage", element: <AuthPage /> },
   { path: "/authpageselection", element: <AuthpageSelection /> },
   {
-    path: "/selection/:event_uuid",
+    path: "/selection/:event_id",
     element: (
       <ProtectedRouteSelection>
         <Gallerys />
@@ -27,7 +27,7 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/gallery/:event_uuid",
+    path: "/gallery/:event_id",
     element: (
       <ProtectedRoute>
         <Photogallery />
