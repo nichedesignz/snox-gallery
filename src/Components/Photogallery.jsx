@@ -1,4 +1,6 @@
-import React, {useEffect, useState, useRef} from "react";
+
+
+import React, {useEffect, useState, useRef,useCallback} from "react";
 import {useParams, useNavigate} from "react-router-dom";
 import {NavLink} from "react-router";
 import axios from "axios";
@@ -9,6 +11,7 @@ import nextArrow from "../assets/next.png";
 import previousArrow from "../assets/back.png";
 
 import CONFIG from '../config';
+import Errorpage from "./Errorpage";
 
 const BASE_URL = `${CONFIG.API_BASE_URL}public/api/v1/gallery`;
 
@@ -24,17 +27,31 @@ function Photogallery() {
     const [eventDetails, setEventDetails] = useState(null);
     const [galleries, setGalleries] = useState([]);
     const [imageClasses, setImageClasses] = useState({});
+    const [hasMore, setHasMore] = useState(true);
 
     const [error, setError] = useState("");
     const [offset, setOffset] = useState(0);
 
-    const limit = 50;
+    const limit = 20;
     const galleryRef = useRef(null);
     const [loadingGallery, setLoadingGallery] = useState(false);
     const scrolltoGallery = () => {
         galleryRef.current?.scrollIntoView({behavior: "smooth"});
     };
-
+    const observer = useRef(null);
+    const lastImageRef = useCallback(
+      (node) => {
+        if (loading || !hasMore) return;
+        if (observer.current) observer.current.disconnect();
+        observer.current = new IntersectionObserver((entries) => {
+          if (entries[0].isIntersecting && hasMore) {
+            setOffset((prevOffset) => prevOffset + limit);
+          }
+        });
+        if (node) observer.current.observe(node);
+      },
+      [loading, hasMore]
+    );
     useEffect(() => {
         const fetchEventData = async () => {
             setLoading(true);
@@ -59,7 +76,10 @@ function Photogallery() {
                     data = response.data.data;
                 }
 
-                // console.log("API Response:", response.data);
+                console.log("API Response:", response.data);
+                // console.log("Fetching event details for event_id:", event_id);
+                // console.log("Fetching images for gallery:", galleryUuid);
+                // console.log("Fetching images for gallery:", selectedGallery);
                 setEventDetails(data.event);
                 setGalleries(data.galleries);
                 setGalleryTitle(data.event.title);
@@ -81,7 +101,6 @@ function Photogallery() {
                 setLoading(false);
             }
         };
-
         fetchEventData();
     }, [event_id]);
 
@@ -89,7 +108,9 @@ function Photogallery() {
     useEffect(() => {
         if (selectedGallery) {
             fetchGalleryImages(selectedGallery, offset);
+            setHasMore(true);
         }
+
     }, [selectedGallery, offset]);
 
     useEffect(() => {
@@ -144,6 +165,9 @@ function Photogallery() {
             } while (currentOffset < totalCount);
             setOffset(newOffset);
             setImages(allImages);
+            // setHasMore(response.data.results.length === limit);
+            setHasMore(response.data.data.results.length === limit);
+
             setOpenedImage(null);
             setCurrentIndex(null);
             // setOffset(0);
@@ -165,17 +189,17 @@ function Photogallery() {
 
     const handleImage = (index) => {
         setCurrentIndex(index);
-        setOpenedImage(images[index]?.small.url);
+        setOpenedImage(images[index]?.large.url);
     };
 
     const handleNext = () => {
         setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
-        setOpenedImage(images[(currentIndex + 1) % images.length]?.small.url);
+        setOpenedImage(images[(currentIndex + 1) % images.length]?.large.url);
     };
 
     const handlePrevious = () => {
         setCurrentIndex((prevIndex) => prevIndex === 0 ? images.length - 1 : prevIndex - 1);
-        setOpenedImage(images[currentIndex === 0 ? images.length - 1 : currentIndex - 1]?.small.url);
+        setOpenedImage(images[currentIndex === 0 ? images.length - 1 : currentIndex - 1]?.large.url);
     };
 
     const closeModal = () => {
@@ -199,7 +223,7 @@ function Photogallery() {
             </div>
         );
     }
-    if (error) return <div>{error}</div>;
+    if (error) return <div><Errorpage/></div>;
 
     return (
         <div className="parallax-wrapper">
@@ -259,13 +283,17 @@ function Photogallery() {
                         <div className="gallery-container">
                             {images.length > 0 ? (
                                 images.map((image, index) => (
-                                    <div key={image.id} className={`gallery-item ${imageClasses[index] || ""}`}>
+                                    <div key={image.id} 
+                                    className={`gallery-item ${imageClasses[index] || ""}`}
+                                    ref={index === images.length - 1 ? lastImageRef : null}
+>
                                         <img
                                             src={image.small.url}
                                             alt={`Image ${index + 1}`}
                                             className="img-fluid"
                                             onClick={() => handleImage(index)}
                                             style={{cursor: "pointer"}}
+                                              loading="lazy"
                                         />
                                     </div>
                                 ))
