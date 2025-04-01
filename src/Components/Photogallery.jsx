@@ -166,8 +166,8 @@ function Photogallery() {
             setOffset(newOffset);
             setImages(allImages);
             // setHasMore(response.data.results.length === limit);
-            setHasMore(response.data.data.results.length === limit);
-
+            // setHasMore(response.data.data.results.length === limit);
+            setHasMore(allImages.length === limit);
             setOpenedImage(null);
             setCurrentIndex(null);
             // setOffset(0);
