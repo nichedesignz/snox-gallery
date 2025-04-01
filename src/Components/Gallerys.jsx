@@ -10,7 +10,7 @@ import '../CSS/naveventstyle.css';
 import logo from '../assets/logo.png';
 import Swal from 'sweetalert2';
 import CONFIG from '../config';
-
+import Errorpage from './Errorpage';
 const BASE_URL = `${CONFIG.API_BASE_URL}public/api/v1/selection`;
 
 const Gallery = () => {
@@ -65,6 +65,8 @@ const Gallery = () => {
 
         fetchEventData();
     }, [event_id]);
+    
+    if (error) return <div><Errorpage/></div>;
 
     const handleSelectedOption = (option) => {
         setSelectedOption(option);
