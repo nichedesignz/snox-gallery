@@ -50,10 +50,12 @@ function Errorpage() {
                     width: "100%",
                     height: "100%",
                     backgroundImage: eventData?.cover_image ? `url(${eventData.cover_image})` : "none",
+                    // backgroundColor:"black",
                     backgroundSize: "cover",
                     backgroundRepeat: "no-repeat",
                     backgroundPosition: "center",
                     zIndex: 1,
+                    
                 }}
             ></div>
 
@@ -66,7 +68,14 @@ function Errorpage() {
 
                 {error && <p className="error-message">{error}</p>}
                 {/* <p>{error}</p> */}
-                <p style={{fontweight:"bold"}}>Please contact your Photographer / Admin </p>
+                <p style={{ 
+    color: "white", 
+    fontWeight: "bold", 
+    fontSize:"20px",
+    textShadow:" 3px 3px 4px rgba(0, 0, 0, 0.61)"
+}}>
+    No images have been published for this event. Please contact the event organizer or support team.
+</p>
             </div>
         </div>
     );
