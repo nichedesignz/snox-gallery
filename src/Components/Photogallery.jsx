@@ -381,9 +381,9 @@ function Photogallery() {
                 }
 
                 console.log("API Response:", response.data);
-                console.log("Fetching event details for event_id:", event_id);
-                console.log("Fetching images for gallery:", galleryUuid);
-                console.log("Fetching images for gallery:", selectedGallery);
+                // console.log("Fetching event details for event_id:", event_id);
+                // console.log("Fetching images for gallery:", galleryUuid);
+                // console.log("Fetching images for gallery:", selectedGallery);
                 setEventDetails(data.event);
                 setGalleries(data.galleries);
                 setGalleryTitle(data.event.title);
@@ -412,7 +412,9 @@ function Photogallery() {
     useEffect(() => {
         if (selectedGallery) {
             fetchGalleryImages(selectedGallery, offset);
+            setHasMore(true);
         }
+
     }, [selectedGallery, offset]);
 
     useEffect(() => {
@@ -467,6 +469,9 @@ function Photogallery() {
             } while (currentOffset < totalCount);
             setOffset(newOffset);
             setImages(allImages);
+            // setHasMore(response.data.results.length === limit);
+            setHasMore(response.data.data.results.length === limit);
+
             setOpenedImage(null);
             setCurrentIndex(null);
             // setOffset(0);
