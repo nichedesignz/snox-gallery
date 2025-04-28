@@ -31,6 +31,15 @@ const Gallery = () => {
 
     useEffect(() => {
         const fetchEventData = async () => {
+            const storedEventId = localStorage.getItem("lastSelUUID");
+
+            if (event_id !== storedEventId) {
+                console.warn("Event ID mismatch! ");
+                localStorage.removeItem("authSelToken");
+                localStorage.setItem("lastSelUUID", event_id);
+                navigate("/authpageselection");
+                return;
+            }  
             try {
                 const token = localStorage.getItem('authSelToken');
                 const response = await axios.get(`${BASE_URL}/${event_id}/`, {
@@ -164,12 +173,12 @@ const Gallery = () => {
 
     const handleImage = (index) => {
         setCurrentIndex(index);
-        setOpenedImage(images[index]?.small.url);
+        setOpenedImage(images[index]?.large.url);
     };
 
     const handleNext = () => {
         setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
-        setOpenedImage(images[(currentIndex + 1) % images.length]?.small.url);
+        setOpenedImage(images[(currentIndex + 1) % images.length]?.large.url);
     };
 
     const handlePrevious = () => {
@@ -177,7 +186,7 @@ const Gallery = () => {
             prevIndex === 0 ? images.length - 1 : prevIndex - 1
         );
         setOpenedImage(
-            images[currentIndex === 0 ? images.length - 1 : currentIndex - 1]?.small.url
+            images[currentIndex === 0 ? images.length - 1 : currentIndex - 1]?.large.url
         );
     };
 
@@ -188,7 +197,7 @@ const Gallery = () => {
 
     const handleDownload = () => {
         const link = document.createElement('a');
-        link.href = openedImage;
+        link.href = `${CONFIG.API_BASE_URL}proxy/download/?url=${openedImage}`;
         link.download = `Image_${currentIndex + 1}.jpeg`;
         document.body.appendChild(link);
         link.click();
