@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 import {useParams} from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import download from '../assets/download.png';
 import nextArrow from '../assets/next.png';
 import previousArrow from '../assets/back.png';
@@ -26,12 +27,13 @@ const Gallery = () => {
     const [imageLoaded, setImageLoaded] = useState({});
     const [selectedOption, setSelectedOption] = useState('allphotos');
     const [maxSelection, setMaxSelection] = useState({});
-
+    const navigate = useNavigate();
     const limit = 50;
 
     useEffect(() => {
         const fetchEventData = async () => {
-            const storedEventId = localStorage.getItem("lastSelUUID");
+            const token = localStorage.getItem('authSelToken');
+           const storedEventId = localStorage.getItem("lastSelUUID");
 
             if (event_id !== storedEventId) {
                 console.warn("Event ID mismatch! ");
@@ -41,7 +43,6 @@ const Gallery = () => {
                 return;
             }  
             try {
-                const token = localStorage.getItem('authSelToken');
                 const response = await axios.get(`${BASE_URL}/${event_id}/`, {
                     headers: { Authorization: `Bearer ${token}` },
                 });
