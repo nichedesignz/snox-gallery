@@ -31,13 +31,13 @@ const Gallery = () => {
 
     useEffect(() => {
         const fetchEventData = async () => {
-            const storedEventId = localStorage.getItem("lastEventUUID");
+            const storedEventId = localStorage.getItem("lastSelUUID");
 
             if (event_id !== storedEventId) {
                 console.warn("Event ID mismatch! ");
                 localStorage.removeItem("authSelToken");
-                localStorage.setItem("lastEventUUID", event_id);
-                navigate("/");
+                localStorage.setItem("lastSelUUID", event_id);
+                navigate("/authpageselection");
                 return;
             }  
             try {

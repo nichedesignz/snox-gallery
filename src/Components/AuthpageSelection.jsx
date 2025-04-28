@@ -13,11 +13,11 @@ function AuthpageSelection() {
 
     useEffect(() => {
         const eventId = localStorage.getItem("eventUUID");
-        const storedEventId = localStorage.getItem("lastEventUUID");
+        const storedEventId = localStorage.getItem("lastSelUUID");
 
         if (eventId !== storedEventId) {
             localStorage.removeItem("authSelToken");
-            localStorage.setItem("lastEventUUID", eventId);
+            localStorage.setItem("lastSelUUID", eventId);
         }
         const fetchEvent = async () => {
 
