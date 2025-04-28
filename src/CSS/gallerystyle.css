@@ -310,7 +310,7 @@
 
   .download-btn{
     position: absolute;
-    top: 23px;
+    top: 20px;
     right: 40px;
     background: none; 
     color: rgb(67, 65, 65);
@@ -599,7 +599,7 @@
       
       .download-btn{
         position: absolute;
-        top: 35px;
+        top: 25px;
         right: 70px;
       }
       .download-btn img{
@@ -776,7 +776,7 @@
       }
       .download-btn{
         position: absolute;
-        top: 35px;
+        top: 27px;
         right: 70px;
       }
       .download-btn img{
