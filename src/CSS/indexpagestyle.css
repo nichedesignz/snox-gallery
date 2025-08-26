@@ -1,6 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Imperial+Script&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Markazi+Text:wght@400..700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Playwrite+HU:wght@100..400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Junge&display=swap');
+.junge-regular {
+  font-family: "Junge", cursive;
+  font-weight: 400;
+  font-style: normal;
+}
 .imperial-script-regular {
     font-family: "Imperial Script", serif;
     font-weight: 400;
@@ -101,23 +107,56 @@ padding: 20px;
     padding-bottom: 20px;
   }
   .indexContent h2{
-    font-family: 'Playwrite HU';
+    font-family: 'junge-regular';
     color: rgb(255, 255, 255);
     font-size: 3rem;
+     font-weight: 100;
     margin-bottom: 20px;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5)
 
   }
+
   .indexContent button{
-    background-color: aliceblue;
-    padding: 10px;
-    color:rgb(93, 91, 91);
-    border-radius:  10px;
-   cursor: pointer;
-   font-size: 20px;
-border: none;
-font-family: 'sans-serif';
-  }
+     display: inline-block;  
+  width: auto;           
+  padding: 12px 24px;      
+  align-self: center;      
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.45) 0%,
+    rgba(255, 255, 255, 0.15) 50%,
+    rgba(255, 255, 255, 0.05) 100%
+  );
+  font-family:  'junge-regular';
+  color: white;
+  text-transform: uppercase;
+  font-size: 20px;
+  font-weight: 300;
+  border-radius: 18px;
+   text-shadow: 4px 4px 4px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(2px);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15);
+  outline: none;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+
+}
+
+
+.indexContent button:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.25);
+}
+
+
+.indexContent button:active {
+  transform: scale(0.98);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
   @media (max-width: 768px) {
     .logostyle {
       top: 40px;
@@ -139,11 +178,15 @@ font-family: 'sans-serif';
    
      }
     .indexContent button{
-        padding: 5px;
+    font-size: 16px;
+      padding: 10px 20px; 
     }
+    
     .indexContent h2{
-        font-size: 5ch;
+         font-size: 24px;
+        font-weight: 100;
         
     }
+
 
   }
