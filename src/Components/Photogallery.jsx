@@ -1,8 +1,6 @@
-
-
-import React, {useEffect, useState, useRef,useCallback} from "react";
-import {useParams, useNavigate} from "react-router-dom";
-import {NavLink} from "react-router";
+import { useEffect, useState, useRef, useCallback } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { NavLink } from "react-router";
 import axios from "axios";
 import logo from "../assets/logo.png";
 import "../CSS/photogallery.css";
@@ -14,53 +12,65 @@ import CONFIG from '../config';
 import Errorpage from "./Errorpage";
 
 const BASE_URL = `${CONFIG.API_BASE_URL}public/api/v1/gallery`;
+const LIMIT = 20;
 
 function Photogallery() {
-    const {event_id} = useParams();
+    const { event_id } = useParams();
     const navigate = useNavigate();
+
+    // Core state
     const [images, setImages] = useState([]);
     const [selectedGallery, setSelectedGallery] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [loadingGallery, setLoadingGallery] = useState(false);
+    const [error, setError] = useState("");
+
+    // Modal state
     const [currentIndex, setCurrentIndex] = useState(null);
     const [openedImage, setOpenedImage] = useState(null);
+
+    // Event/Gallery data
     const [galleryTitle, setGalleryTitle] = useState("");
     const [eventDetails, setEventDetails] = useState(null);
     const [galleries, setGalleries] = useState([]);
-    const [imageClasses, setImageClasses] = useState({});
-    const [hasMore, setHasMore] = useState(true);
 
-    const [error, setError] = useState("");
+    // Pagination state
     const [offset, setOffset] = useState(0);
+    const [hasMore, setHasMore] = useState(true);
+    const [imageClasses, setImageClasses] = useState({});
 
-    const limit = 20;
+    // Refs
     const galleryRef = useRef(null);
-    const [loadingGallery, setLoadingGallery] = useState(false);
-    const scrolltoGallery = () => {
-        galleryRef.current?.scrollIntoView({behavior: "smooth"});
-    };
     const observer = useRef(null);
-    const lastImageRef = useCallback(
-      (node) => {
-        if (loading || !hasMore) return;
+
+    // Scroll to gallery section
+    const scrollToGallery = () => {
+        galleryRef.current?.scrollIntoView({ behavior: "smooth" });
+    };
+
+    // Intersection observer for infinite scroll
+    const lastImageRef = useCallback((node) => {
+        if (loadingGallery || !hasMore) return;
+
         if (observer.current) observer.current.disconnect();
+
         observer.current = new IntersectionObserver((entries) => {
-          if (entries[0].isIntersecting && hasMore) {
-            setOffset((prevOffset) => prevOffset + limit);
-          }
-        });
+            if (entries[0].isIntersecting) {
+                setOffset(prevOffset => prevOffset + LIMIT);
+            }
+        }, { threshold: 0.1 });
+
         if (node) observer.current.observe(node);
-      },
-      [loading, hasMore]
-    );
+    }, [loadingGallery, hasMore]);
+
+    // Fetch event data and initial gallery
     useEffect(() => {
         const fetchEventData = async () => {
-            setLoading(true);
-
             const token = localStorage.getItem("authToken");
             const storedEventId = localStorage.getItem("lastEventUUID");
 
             if (event_id !== storedEventId) {
-                console.warn("Event ID mismatch! ");
+                console.warn("Event ID mismatch!");
                 localStorage.removeItem("authToken");
                 localStorage.setItem("lastEventUUID", event_id);
                 navigate("/");
@@ -69,30 +79,21 @@ function Photogallery() {
 
             try {
                 const response = await axios.get(`${BASE_URL}/${event_id}`, {
-                    headers: {Authorization: `Bearer ${token}`},
+                    headers: { Authorization: `Bearer ${token}` },
                 });
-                let data;
-                if (response.data.result) {
-                    data = response.data.data;
+
+                if (!response.data.result) {
+                    throw new Error("Invalid response format");
                 }
 
-                console.log("API Response:", response.data);
-                // console.log("Fetching event details for event_id:", event_id);
-                // console.log("Fetching images for gallery:", galleryUuid);
-                // console.log("Fetching images for gallery:", selectedGallery);
+                const data = response.data.data;
                 setEventDetails(data.event);
                 setGalleries(data.galleries);
                 setGalleryTitle(data.event.title);
 
+                // Set first gallery as selected
                 if (data.galleries.length > 0) {
-                    const firstGalleryUuid = data.galleries[0].id;
-                    setSelectedGallery(firstGalleryUuid);
-
-                    const imagesResponse = await axios.get(
-                        `${BASE_URL}/images/${firstGalleryUuid}`,
-                        {headers: {Authorization: `Bearer ${token}`}}
-                    );
-                    setImages(imagesResponse.data.data.results || []);
+                    setSelectedGallery(data.galleries[0].id);
                 }
             } catch (err) {
                 setError("Failed to load event details.");
@@ -101,105 +102,102 @@ function Photogallery() {
                 setLoading(false);
             }
         };
+
         fetchEventData();
-    }, [event_id]);
+    }, [event_id, navigate]);
 
-
-    useEffect(() => {
-        if (selectedGallery) {
-            fetchGalleryImages(selectedGallery, offset);
-            setHasMore(true);
-        }
-
-    }, [selectedGallery, offset]);
-
-    useEffect(() => {
-        const loadImages = async () => {
-            const newImageClasses = {};
-
-            for (const [index, image] of images.entries()) {
-                const img = new Image();
-                img.src = image.small.url;
-                await img.decode(); // Ensure the image is loaded
-
-                if (img.naturalWidth > img.naturalHeight) {
-                    newImageClasses[index] = "horizontal";
-                } else {
-                    newImageClasses[index] = "vertical";
-                }
-            }
-
-            setImageClasses(newImageClasses);
-        };
-
-        if (images.length > 0) {
-            loadImages();
-        }
-    }, [images]);
-
-    const fetchGalleryImages = async (galleryUuid, newOffset) => {
+    // Fetch gallery images with pagination
+    const fetchGalleryImages = useCallback(async (galleryUuid, currentOffset) => {
         try {
             setLoadingGallery(true);
             const token = localStorage.getItem("authToken");
-            let allImages = [];
-            let currentOffset = 0;
-            // const limit = 50;
-            let totalCount = null;
+            const response = await axios.get(`${BASE_URL}/images/${galleryUuid}`, {
+                headers: { Authorization: `Bearer ${token}` },
+                params: { offset: currentOffset, limit: LIMIT },
+            });
 
-            do {
-                const response = await axios.get(`${BASE_URL}/images/${galleryUuid}`, {
-                    headers: {Authorization: `Bearer ${token}`},
-                    params: {offset: currentOffset, limit},
-                });
+            const newImages = response.data.data.results || [];
+            console.log(newImages);
+            if (currentOffset === 0) {
+                setImages(newImages);
+            } else {
+                setImages(prev => [...prev, ...newImages]);
+            }
 
-                if (totalCount === null) {
-                    totalCount = response.data.data.count;
-                    console.log("Total images: " + totalCount);
-                }
+            setHasMore(newImages.length === LIMIT);
 
-                console.log("Fetched images part: " + currentOffset + " to " + (currentOffset + limit));
-
-                allImages = [...allImages, ...response.data.data.results];
-                currentOffset += limit;
-
-            } while (currentOffset < totalCount);
-            setOffset(newOffset);
-            setImages(allImages);
-            // setHasMore(response.data.results.length === limit);
-            // setHasMore(response.data.data.results.length === limit);
-            setHasMore(allImages.length === limit);
-            setOpenedImage(null);
-            setCurrentIndex(null);
-            // setOffset(0);
+            // Close modal when switching galleries
+            if (currentOffset === 0) {
+                setOpenedImage(null);
+                setCurrentIndex(null);
+            }
 
         } catch (err) {
             setError("Failed to load gallery images.");
             console.error("Error fetching gallery images:", err);
         } finally {
-            setTimeout(() => {
-                setLoadingGallery(false);
-            }, 500);
+            setLoadingGallery(false);
+        }
+    }, []);
+
+    // Fetch images when gallery or offset changes
+    useEffect(() => {
+        if (selectedGallery) {
+            fetchGalleryImages(selectedGallery, offset);
+        }
+    }, [selectedGallery, offset, fetchGalleryImages]);
+
+    // Calculate image orientation classes
+    useEffect(() => {
+        const loadImageClasses = async () => {
+            const newImageClasses = {};
+            const promises = images.map(async (image, index) => {
+                try {
+                    const img = new Image();
+                    img.src = image.small.url;
+                    await img.decode();
+
+                    newImageClasses[index] = img.naturalWidth > img.naturalHeight ? "horizontal" : "vertical";
+                } catch {
+                    newImageClasses[index] = "vertical"; // fallback
+                }
+            });
+
+            await Promise.all(promises);
+            setImageClasses(newImageClasses);
+        };
+
+        if (images.length > 0) {
+            loadImageClasses();
+        }
+    }, [images]);
+
+    // Gallery selection handler
+    const handleGalleryClick = (galleryUuid) => {
+        if (galleryUuid !== selectedGallery) {
+            setSelectedGallery(galleryUuid);
+            setOffset(0);
+            setImages([]);
+            setImageClasses({});
         }
     };
-    const handleGalleryClick = (galleryUuid) => {
-        setSelectedGallery(galleryUuid);
-        setOffset(0);
-    };
 
-
-    const handleImage = (index) => {
+    // Image modal handlers
+    const handleImageClick = (index) => {
         setCurrentIndex(index);
         setOpenedImage(images[index]?.large.url);
     };
 
     const handleNext = () => {
-        setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
-        setOpenedImage(images[(currentIndex + 1) % images.length]?.large.url);
+        const nextIndex = (currentIndex + 1) % images.length;
+        setCurrentIndex(nextIndex);
+        setOpenedImage(images[nextIndex]?.large.url);
     };
 
     const handlePrevious = () => {
-        setCurrentIndex((prevIndex) => prevIndex === 0 ? images.length - 1 : prevIndex - 1);
-        setOpenedImage(images[currentIndex === 0 ? images.length - 1 : currentIndex - 1]?.large.url);
+        const prevIndex = currentIndex === 0 ? images.length - 1 : currentIndex - 1;
+        setCurrentIndex(prevIndex);
+        setOpenedImage(images[prevIndex]?.large.url);
     };
 
     const closeModal = () => {
@@ -207,8 +205,24 @@ function Photogallery() {
         setOpenedImage(null);
     };
 
+    // Keyboard navigation
+    useEffect(() => {
+        const handleKeyDown = (e) => {
+            if (!openedImage) return;
 
+            if (e.key === 'ArrowLeft') handlePrevious();
+            if (e.key === 'ArrowRight') handleNext();
+            if (e.key === 'Escape') closeModal();
+        };
+
+        document.addEventListener('keydown', handleKeyDown);
+        return () => document.removeEventListener('keydown', handleKeyDown);
+    }, [openedImage, currentIndex, images.length]);
+
+    // Download handler
     const handleDownload = () => {
+        if (!openedImage) return;
+
         const link = document.createElement('a');
         link.href = `${CONFIG.API_BASE_URL}proxy/download/?url=${openedImage}`;
         link.download = `Image_${currentIndex + 1}.jpeg`;
@@ -216,6 +230,8 @@ function Photogallery() {
         link.click();
         document.body.removeChild(link);
     };
+
+    // Loading state
     if (loading) {
         return (
             <div className="loader-wrapper">
@@ -223,15 +239,20 @@ function Photogallery() {
             </div>
         );
     }
-    if (error) return <div><Errorpage/></div>;
+
+    // Error state
+    if (error) {
+        return <Errorpage />;
+    }
 
     return (
         <div className="parallax-wrapper">
+            {/* Hero Section */}
             <div className="hero parallax-content">
                 <div
                     className="imagecontainer"
                     style={{
-                        backgroundImage: `url(${eventDetails.cover_image})`,
+                        backgroundImage: `url(${eventDetails?.cover_image})`,
                         backgroundSize: "cover",
                         backgroundPosition: "center",
                         backgroundRepeat: "no-repeat",
@@ -240,42 +261,41 @@ function Photogallery() {
                     }}
                 >
                     <div className="button-container">
-                        <button onClick={scrolltoGallery}>OPEN GALLERY</button>
+                        <button onClick={scrollToGallery}>OPEN GALLERY</button>
                     </div>
                 </div>
             </div>
 
+            {/* Main Content */}
             <div className="main-content">
+                {/* Title Section */}
                 <div className="hero__title">
                     <h1>{galleryTitle}</h1>
                     <div>
-                        <img className="logostylePG" src={logo} alt="Logo"/>
+                        <img className="logostylePG" src={logo} alt="Logo" />
                     </div>
                 </div>
 
-
+                {/* Gallery Navigation */}
                 <div className="navbarmain" ref={galleryRef}>
                     {galleries.length > 0 ? (
                         galleries.map((gallery) => (
-                            <div key={gallery.id}>
-                                <NavLink
-                                    className={`nav-item ${
-                                        selectedGallery === gallery.id ? "selected" : ""
-                                    }`}
-                                    onClick={() => handleGalleryClick(gallery.id)}
-                                >
-                                    {gallery.name}
-                                </NavLink>
-                            </div>
+                            <NavLink
+                                key={gallery.id}
+                                className={`nav-item ${selectedGallery === gallery.id ? "selected" : ""}`}
+                                onClick={() => handleGalleryClick(gallery.id)}
+                            >
+                                {gallery.name}
+                            </NavLink>
                         ))
                     ) : (
                         <p>No galleries found for this event.</p>
                     )}
                 </div>
 
-
+                {/* Gallery Grid */}
                 <div>
-                    {loadingGallery ? (
+                    {loadingGallery && images.length === 0 ? (
                         <div className="loader-wrapper">
                             <div className="loader"></div>
                         </div>
@@ -283,50 +303,65 @@ function Photogallery() {
                         <div className="gallery-container">
                             {images.length > 0 ? (
                                 images.map((image, index) => (
-                                    <div key={image.id} 
-                                    className={`gallery-item ${imageClasses[index] || ""}`}
-                                    ref={index === images.length - 1 ? lastImageRef : null}
->
+                                    <div
+                                        key={`${image.id}-${index}`}
+                                        className={`gallery-item ${imageClasses[index] || ""}`}
+                                        ref={index === images.length - 1 ? lastImageRef : null}
+                                    >
                                         <img
                                             src={image.small.url}
                                             alt={`Image ${index + 1}`}
                                             className="img-fluid"
-                                            onClick={() => handleImage(index)}
-                                            style={{cursor: "pointer"}}
-                                              loading="lazy"
+                                            onClick={() => handleImageClick(index)}
+                                            style={{ cursor: "pointer" }}
+                                            loading="lazy"
                                         />
                                     </div>
                                 ))
                             ) : (
                                 <p>No images available for this gallery.</p>
                             )}
+
+                            {/* Loading indicator for pagination */}
+                            {loadingGallery && images.length > 0 && (
+                                <div className="loader-wrapper">
+                                    <div className="loader"></div>
+                                </div>
+                            )}
                         </div>
                     )}
                 </div>
 
+                {/* Image Modal */}
                 {openedImage && (
                     <div className="openmodal" onClick={closeModal}>
                         <div className="openmodal-content" onClick={(e) => e.stopPropagation()}>
                             <button className="Gdownload-btn" onClick={handleDownload}>
-                                <img src={download} alt="Download"/>
+                                <img src={download} alt="Download" />
                             </button>
-                            <button className="Gclose-btn" onClick={closeModal}>&times;</button>
+                            <button className="Gclose-btn" onClick={closeModal}>
+                                &times;
+                            </button>
                             <button className="Gprev-btn" onClick={handlePrevious}>
-                                <img src={previousArrow} alt="Previous"/>
+                                <img src={previousArrow} alt="Previous" />
                             </button>
-                            <img src={openedImage} alt="Full Image" className="openmodal-image"/>
+                            <img
+                                src={openedImage}
+                                alt="Full Image"
+                                className="openmodal-image"
+                                onError={(e) => {
+                                    e.target.src = images[currentIndex]?.small.url;
+                                }}
+                            />
                             <button className="Gnext-btn" onClick={handleNext}>
-                                <img src={nextArrow} alt="Next"/>
+                                <img src={nextArrow} alt="Next" />
                             </button>
                         </div>
                     </div>
                 )}
             </div>
         </div>
-
     );
 }
 
 export default Photogallery;
-
-
