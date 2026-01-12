@@ -1,5 +1,4 @@
 import {useEffect, useState} from 'react';
-import axios from 'axios';
 import {useParams} from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
 import tick from '../assets/checkbox2.png';
@@ -8,12 +7,14 @@ import '../CSS/naveventstyle.css';
 import logo from '../assets/logo.png';
 import Swal from 'sweetalert2';
 import CONFIG from '../config';
-import ErrorPage from './ErrorPage.jsx';
+import ErrorPage from './Errorpage.jsx';
 import ImageModal from './common/ImageModal';
 import LoadingSpinner from './common/LoadingSpinner';
 import GalleryNavigation from './common/GalleryNavigation';
 import ImageGrid from './common/ImageGrid';
 import useGallery from '../hooks/useGallery';
+import GalleryService from '../services/galleryService';
+
 const BASE_URL = `${CONFIG.API_BASE_URL}public/api/v1/selection`;
 
 const GallerySelectionPage = () => {
@@ -80,29 +81,23 @@ const GallerySelectionPage = () => {
                 return;
             }
             try {
-                const response = await axios.get(`${BASE_URL}/${event_id}/`, {
-                    headers: { Authorization: `Bearer ${token}` },
-                });
-                console.log(response);
-                if(response.data.result) {
-                    const data = response.data.data;
-                    console.log(data)
-                    setEventDetails(data.event);
-                    setGalleries(data.galleries);
+                const data = await GalleryService.fetchSelectionEventData(event_id, token);
+                console.log(data)
+                setEventDetails(data.event);
+                setGalleries(data.galleries);
 
-                    if (data.galleries.length > 0) {
-                        handleGalleryClick(data.galleries[0].id);
-                    } else {
-                        setLoading(false);
-                    }
-
-                    const gallerySelections = data.galleries.reduce((acc, gallery) => {
-                        acc[gallery.id] = gallery.selection_info?.max_selections ?? 25;
-                        return acc;
-                    }, {});
-                    console.log(gallerySelections)
-                    setMaxSelection(gallerySelections);
+                if (data.galleries.length > 0) {
+                    handleGalleryClick(data.galleries[0].id);
+                } else {
+                    setLoading(false);
                 }
+
+                const gallerySelections = data.galleries.reduce((acc, gallery) => {
+                    acc[gallery.id] = gallery.selection_info?.max_selections ?? 25;
+                    return acc;
+                }, {});
+                console.log(gallerySelections)
+                setMaxSelection(gallerySelections);
             } catch (err) {
                 setError("Failed to load galleries.");
                 console.error("Error fetching galleries:", err);
@@ -189,11 +184,8 @@ const GallerySelectionPage = () => {
 
         try {
             const token = localStorage.getItem('authSelToken');
-            const payload = { "selected_photos": selectedImageIds };
 
-            await axios.post(`${BASE_URL}/submit/${selectedGallery}/`, payload, {
-                headers: { Authorization: `Bearer ${token}` },
-            });
+            await GalleryService.submitSelectedImages(selectedGallery, token, selectedImageIds);
 
             Swal.fire({
                 icon: 'success',

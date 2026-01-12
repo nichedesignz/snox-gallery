@@ -32,6 +32,8 @@ export const useGallery = (baseUrl, tokenKey) => {
         currentOffset += limit;
       } while (currentOffset < totalCount);
 
+      // Set the fetched images in state
+      setImages(allImages);
       return allImages;
     } catch (err) {
       setError("Failed to load gallery images.");

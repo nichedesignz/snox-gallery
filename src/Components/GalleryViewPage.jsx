@@ -1,17 +1,15 @@
 import { useEffect, useState, useRef, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { NavLink } from "react-router";
-import axios from "axios";
 import logo from "../assets/logo.png";
 import "../CSS/photogallery.css";
 import download from "../assets/download.png";
 import nextArrow from "../assets/next.png";
 import previousArrow from "../assets/back.png";
 
-import CONFIG from '../config';
-import ErrorPage from "./ErrorPage.jsx";
+import ErrorPage from "./Errorpage.jsx";
+import GalleryService from '../services/galleryService';
 
-const BASE_URL = `${CONFIG.API_BASE_URL}public/api/v1/gallery`;
 const LIMIT = 20;
 
 function GalleryViewPage() {
@@ -63,7 +61,7 @@ function GalleryViewPage() {
         if (node) observer.current.observe(node);
     }, [loadingGallery, hasMore]);
 
-    // Fetch event data and initial gallery
+    // Fetch event data and initial gallery using API service
     useEffect(() => {
         const fetchEventData = async () => {
             const token = localStorage.getItem("authToken");
@@ -78,15 +76,7 @@ function GalleryViewPage() {
             }
 
             try {
-                const response = await axios.get(`${BASE_URL}/${event_id}`, {
-                    headers: { Authorization: `Bearer ${token}` },
-                });
-
-                if (!response.data.result) {
-                    throw new Error("Invalid response format");
-                }
-
-                const data = response.data.data;
+                const data = await GalleryService.fetchEventData(event_id, token);
                 setEventDetails(data.event);
                 setGalleries(data.galleries);
                 setGalleryTitle(data.event.title);
@@ -106,18 +96,18 @@ function GalleryViewPage() {
         fetchEventData();
     }, [event_id, navigate]);
 
-    // Fetch gallery images with pagination
+    // Fetch gallery images with pagination using API service
     const fetchGalleryImages = useCallback(async (galleryUuid, currentOffset) => {
         try {
             setLoadingGallery(true);
             const token = localStorage.getItem("authToken");
-            const response = await axios.get(`${BASE_URL}/images/${galleryUuid}`, {
-                headers: { Authorization: `Bearer ${token}` },
-                params: { offset: currentOffset, limit: LIMIT },
-            });
+            const newImages = await GalleryService.fetchGalleryImages(
+                galleryUuid,
+                token,
+                currentOffset,
+                LIMIT
+            );
 
-            const newImages = response.data.data.results || [];
-            console.log(newImages);
             if (currentOffset === 0) {
                 setImages(newImages);
             } else {
@@ -219,12 +209,13 @@ function GalleryViewPage() {
         return () => document.removeEventListener('keydown', handleKeyDown);
     }, [openedImage, currentIndex, images.length]);
 
-    // Download handler
+    // Download handler using API service
     const handleDownload = () => {
         if (!openedImage) return;
 
+        const downloadUrl = GalleryService.getDownloadUrl(openedImage);
         const link = document.createElement('a');
-        link.href = `${CONFIG.API_BASE_URL}proxy/download/?url=${openedImage}`;
+        link.href = downloadUrl;
         link.download = `Image_${currentIndex + 1}.jpeg`;
         document.body.appendChild(link);
         link.click();
