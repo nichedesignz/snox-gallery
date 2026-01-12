@@ -6,7 +6,7 @@ import {useNavigate} from "react-router-dom";
 
 import CONFIG from '../config';
 
-function AuthPage() {
+function GalleryViewAuthPage() {
     const [pin, setPin] = useState("");
     const [error, setError] = useState("");
     const [eventData, setEventData] = useState(null);
@@ -104,4 +104,4 @@ function AuthPage() {
     );
 }
 
-export default AuthPage; 
+export default GalleryViewAuthPage;

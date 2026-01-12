@@ -6,7 +6,7 @@ import {useNavigate} from "react-router-dom";
 
 import CONFIG from '../config';
 
-function Errorpage() {
+function ErrorPage() {
     const [error, setError] = useState("");
     const [eventData, setEventData] = useState(null);
     const navigate = useNavigate();
@@ -81,4 +81,4 @@ function Errorpage() {
     );
 }
 
-export default Errorpage; 
+export default ErrorPage;

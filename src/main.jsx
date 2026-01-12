@@ -4,25 +4,25 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.jsx'
 import './App.css';
-import HomePage from './Components/Homepage.jsx';
+import HomePage from './Components/HomePage.jsx';
 import IndexPage from './IndexPage.jsx';
-import Gallerys from './Components/Gallerys.jsx';
-import Photogallery from './Components/Photogallery.jsx';
-import AuthPage from './Components/Authpage.jsx';
-import AuthpageSelection from './Components/AuthpageSelection.jsx';
+import GallerySelectionPage from './Components/GallerySelectionPage.jsx';
+import GalleryViewPage from './Components/GalleryViewPage.jsx';
+import GalleryViewAuthPage from './Components/GalleryViewAuthPage.jsx';
+import GallerySelectionAuthPage from './Components/GallerySelectionAuthPage.jsx';
 import ProtectedRoute from './protectedroute.jsx'
 import ProtectedRouteSelection from './protectedSelection.jsx';
 
 const router = createBrowserRouter([
   { path: "/", element: <IndexPage /> },
   { path: "/home", element: <HomePage /> },
-  { path: "/authpage", element: <AuthPage /> },
-  { path: "/authpageselection", element: <AuthpageSelection /> },
+  { path: "/authpage", element: <GalleryViewAuthPage /> },
+  { path: "/authpageselection", element: <GallerySelectionAuthPage /> },
   {
     path: "/selection/:event_id",
     element: (
       <ProtectedRouteSelection>
-        <Gallerys />
+        <GallerySelectionPage />
       </ProtectedRouteSelection>
     ),
   },
@@ -30,7 +30,7 @@ const router = createBrowserRouter([
     path: "/gallery/:event_id",
     element: (
       <ProtectedRoute>
-        <Photogallery />
+        <GalleryViewPage />
       </ProtectedRoute>
     ),
   },

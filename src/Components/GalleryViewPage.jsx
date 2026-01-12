@@ -9,12 +9,12 @@ import nextArrow from "../assets/next.png";
 import previousArrow from "../assets/back.png";
 
 import CONFIG from '../config';
-import Errorpage from "./Errorpage";
+import ErrorPage from "./ErrorPage.jsx";
 
 const BASE_URL = `${CONFIG.API_BASE_URL}public/api/v1/gallery`;
 const LIMIT = 20;
 
-function Photogallery() {
+function GalleryViewPage() {
     const { event_id } = useParams();
     const navigate = useNavigate();
 
@@ -242,7 +242,7 @@ function Photogallery() {
 
     // Error state
     if (error) {
-        return <Errorpage />;
+        return <ErrorPage />;
     }
 
     return (
@@ -364,4 +364,4 @@ function Photogallery() {
     );
 }
 
-export default Photogallery;
+export default GalleryViewPage;

@@ -5,7 +5,7 @@ import logo from "../assets/logo.png";
 import {useNavigate} from "react-router-dom";
 import CONFIG from '../config';
 
-function AuthpageSelection() {
+function GallerySelectionAuthPage() {
     const [pin, setPin] = useState("");
     const [error, setError] = useState("");
     const [eventData, setEventData] = useState(null);
@@ -108,4 +108,4 @@ function AuthpageSelection() {
     );
 }
 
-export default AuthpageSelection;
+export default GallerySelectionAuthPage;
