@@ -9,6 +9,8 @@ import previousArrow from "../assets/back.png";
 
 import ErrorPage from "./Errorpage.jsx";
 import GalleryService from '../services/galleryService';
+import Footer from './common/Footer';
+import '../CSS/footer.css';
 
 const LIMIT = 20;
 
@@ -31,6 +33,7 @@ function GalleryViewPage() {
     const [galleryTitle, setGalleryTitle] = useState("");
     const [eventDetails, setEventDetails] = useState(null);
     const [galleries, setGalleries] = useState([]);
+    const [business, setBusiness] = useState(null);
 
     // Pagination state
     const [offset, setOffset] = useState(0);
@@ -80,6 +83,11 @@ function GalleryViewPage() {
                 setEventDetails(data.event);
                 setGalleries(data.galleries);
                 setGalleryTitle(data.event.title);
+
+                // Set business data if available
+                if (data.business) {
+                    setBusiness(data.business);
+                }
 
                 // Set first gallery as selected
                 if (data.galleries.length > 0) {
@@ -351,6 +359,9 @@ function GalleryViewPage() {
                     </div>
                 )}
             </div>
+
+            {/* Footer */}
+            <Footer business={business} />
         </div>
     );
 }

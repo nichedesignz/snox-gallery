@@ -14,6 +14,8 @@ import GalleryNavigation from './common/GalleryNavigation';
 import ImageGrid from './common/ImageGrid';
 import useGallery from '../hooks/useGallery';
 import GalleryService from '../services/galleryService';
+import Footer from './common/Footer';
+import '../CSS/footer.css';
 
 const BASE_URL = `${CONFIG.API_BASE_URL}public/api/v1/selection`;
 
@@ -24,6 +26,7 @@ const GallerySelectionPage = () => {
     const [selectedGallery, setSelectedGallery] = useState(null);
     const [selectedOption, setSelectedOption] = useState('allphotos');
     const [maxSelection, setMaxSelection] = useState({});
+    const [business, setBusiness] = useState(null);
     const navigate = useNavigate();
     const limit = 50;
 
@@ -85,6 +88,11 @@ const GallerySelectionPage = () => {
                 console.log(data)
                 setEventDetails(data.event);
                 setGalleries(data.galleries);
+
+                // Set business data if available
+                if (data.business) {
+                    setBusiness(data.business);
+                }
 
                 if (data.galleries.length > 0) {
                     handleGalleryClick(data.galleries[0].id);
@@ -273,6 +281,9 @@ const GallerySelectionPage = () => {
                     </button>
                 </div>
             )}
+
+            {/* Footer */}
+            <Footer business={business} />
         </div>
     );
 };
