@@ -38,20 +38,19 @@ function GallerySelectionAuthPage() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        const eventId = localStorage.getItem("eventUUID")
         try {
             const response = await axios.post(
                 `${CONFIG.API_BASE_URL}public/api/v1/auth/selection/verify-pin/`,
                 {
                     pin,
-                    event_id: localStorage.getItem('eventUUID')
+                    event_id: eventId
                 }
             );
             if (response.data.result) {
                 const token = response.data.data.token;
                 localStorage.setItem("authSelToken", token);
-                console.log("Token stored successfully:", token);
-                console.log(`/selection/${eventData?.id}`)
-                navigate(`/selection/${eventData?.id}`, {replace: true});
+                navigate(`/selection/${eventId}`, {replace: true});
             } else {
                 setError("Enter a valid PIN!");
             }

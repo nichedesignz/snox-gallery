@@ -37,13 +37,13 @@ function GalleryViewAuthPage() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+        const eventId = localStorage.getItem("eventUUID")
         try {
             const response = await axios.post(
                 `${CONFIG.API_BASE_URL}public/api/v1/auth/gallery/verify-pin/`,
                 {
                     pin,
-                    event_id: localStorage.getItem("eventUUID"),
+                    event_id: eventId,
                 }
             );
 
@@ -52,7 +52,7 @@ function GalleryViewAuthPage() {
             const token = response.data.data.token;
             localStorage.setItem("authToken", token);
 
-            navigate(`/gallery/${eventData.id}`, {replace: true});
+            navigate(`/gallery/${eventId}`, {replace: true});
         } catch (error) {
             console.error("Error:", error);
             setError("Enter a valid PIN!");
