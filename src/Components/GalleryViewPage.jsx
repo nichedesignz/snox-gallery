@@ -361,7 +361,7 @@ function GalleryViewPage() {
             </div>
 
             {/* Footer */}
-            <Footer business={business} />
+            <Footer business={business} galleryId={selectedGallery} />
         </div>
     );
 }

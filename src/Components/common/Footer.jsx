@@ -1,13 +1,21 @@
 import '../../CSS/footer.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInstagram, faFacebook, faYoutube, faTwitter, faLinkedin } from '@fortawesome/free-brands-svg-icons';
+import DownloadAllWidget from './DownloadAllWidget';
 
-const Footer = ({ business }) => {
+const Footer = ({ business, galleryId }) => {
   if (!business) return null;
 
   return (
     <footer className="gallery-footer">
       <div className="footer-container">
+        {/* Download All Widget */}
+        {galleryId && (
+          <div className="footer-download-section">
+            <DownloadAllWidget galleryId={galleryId} />
+          </div>
+        )}
+
         <div className="footer-content">
           {/* Logo section */}
           {business.logo && (

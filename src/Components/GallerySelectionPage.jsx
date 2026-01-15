@@ -283,7 +283,7 @@ const GallerySelectionPage = () => {
             )}
 
             {/* Footer */}
-            <Footer business={business} />
+            <Footer business={business} galleryId={selectedGallery} />
         </div>
     );
 };
