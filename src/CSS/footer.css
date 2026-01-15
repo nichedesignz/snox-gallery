@@ -1,6 +1,5 @@
 /* Footer Styles */
 .gallery-footer {
-  width: 100%;
   background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
   padding: 40px 20px 20px;
   margin-top: 60px;
@@ -20,6 +19,8 @@
   margin-bottom: 40px;
   padding-bottom: 30px;
   border-bottom: 1px solid #dee2e6;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .footer-content {
@@ -207,6 +208,13 @@
     margin-top: 40px;
   }
 
+  .footer-download-section {
+    margin-bottom: 30px;
+    padding-bottom: 25px;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
   .business-name {
     font-size: 2rem;
   }
@@ -222,6 +230,17 @@
 }
 
 @media (max-width: 480px) {
+  .gallery-footer {
+    padding: 20px 10px 10px;
+  }
+
+  .footer-download-section {
+    margin-bottom: 25px;
+    padding-bottom: 20px;
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+
   .business-name {
     font-size: 1.8rem;
   }
@@ -232,5 +251,9 @@
 
   .instagram-link {
     font-size: 0.9rem;
+  }
+
+  .footer-content {
+    gap: 15px;
   }
 }

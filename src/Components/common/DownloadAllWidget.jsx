@@ -124,13 +124,13 @@ const DownloadAllWidget = ({ galleryId }) => {
   };
 
   // Format file size
-  const formatFileSize = (bytes) => {
-    if (bytes === 0) return '0 Bytes';
+    const formatFileSize = (kb) => {
+    if (kb === 0) return '0 KB';
     const k = 1024;
-    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return Math.round(bytes / Math.pow(k, i) * 100) / 100 + ' ' + sizes[i];
-  };
+    const sizes = ['KB', 'MB', 'GB', 'TB'];
+    const i = Math.floor(Math.log(kb) / Math.log(k));
+    return Math.round((kb / Math.pow(k, i)) * 100) / 100 + ' ' + sizes[i];
+    };
 
   return (
     <div className="download-all-widget">
