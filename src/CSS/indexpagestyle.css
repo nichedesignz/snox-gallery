@@ -2,73 +2,82 @@
 @import url('https://fonts.googleapis.com/css2?family=Markazi+Text:wght@400..700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Playwrite+HU:wght@100..400&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Junge&display=swap');
+
 .junge-regular {
-  font-family: "Junge", cursive;
-  font-weight: 400;
-  font-style: normal;
+    font-family: "Junge", cursive;
+    font-weight: 400;
+    font-style: normal;
 }
+
 .imperial-script-regular {
     font-family: "Imperial Script", serif;
     font-weight: 400;
     font-style: normal;
-  }
-  .playwrite-hu {
+}
+
+.playwrite-hu {
     font-family: "Playwrite HU", serif;
     font-optical-sizing: auto;
-    font-weight:3rem;
+    font-weight: 3rem;
     font-style: normal;
-  }
-  .markazi-text {
+}
+
+.markazi-text {
     font-family: "Markazi Text", serif;
     font-optical-sizing: auto;
-    font-weight:300;
+    font-weight: 300;
     font-style: normal;
-  }
-.logostyle{
+}
+
+.logostyle {
     position: absolute;
     top: 40px;
     left: 50%;
- transform: translateX(0); 
+    transform: translateX(0);
     z-index: 2;
     max-width: 100px;
     height: auto;
-  
+
 }
-.indexpage{
+
+.indexpage {
     overflow: hidden;
 }
-.indexcontainer{
+
+.indexcontainer {
     position: relative;
-    background-image: url('.././assets/indeximage.jpg');
+    background-image: url('.././assets/placeholder-bg.jpg');
     height: 100vh;
-width:full;
-object-fit:contain;
-background-size: cover;
-background-repeat: no-repeat;
-background-position: center;
-display: flex;
-justify-content: center;
-align-items: flex-end;
-padding: 20px;
- }
- .zoom-in-out-element {
-    animation: zoom-in-zoom-out 10s ease-in infinite;
- 
-   
+    width: 100%;
+    object-fit: contain;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    padding: 20px;
 }
-  
-  @keyframes zoom-in-zoom-out {
+
+.zoom-in-out-element {
+    animation: zoom-in-zoom-out 10s ease-in infinite;
+
+
+}
+
+@keyframes zoom-in-zoom-out {
     0% {
-      scale: 100%;
+        scale: 100%;
     }
     50% {
-      scale: 120%;
+        scale: 120%;
     }
     100% {
-      scale: 100%;
+        scale: 100%;
     }
-  }
-  .loader-wrapperselection {
+}
+
+.loader-wrapperselection {
     position: fixed;
     top: 0;
     left: 0;
@@ -91,102 +100,109 @@ padding: 20px;
 }
 
 @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 
-  .indexContent{ 
-    position: absolute; 
-    bottom: 20px; 
+.indexContent {
+    position: absolute;
+    bottom: 20px;
     left: 50%;
-    transform: translateX(-50%); 
+    transform: translateX(-50%);
     text-align: center;
-    z-index: 2; 
+    z-index: 2;
     color: white;
     padding-bottom: 20px;
-  }
-  .indexContent h2{
+}
+
+.indexContent h2 {
     font-family: "Junge", cursive;
     color: rgb(255, 255, 255);
     font-size: 2rem;
-     font-weight: 100;
+    font-weight: 100;
     margin-bottom: 20px;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5)
 
-  }
+}
 
-  .indexContent button{
-     display: inline-block;  
-  width: auto;           
-  padding: 10px 24px;      
-  align-self: center;      
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  background: linear-gradient(
-    to bottom,
-    rgba(255, 255, 255, 0.45) 0%,
-    rgba(255, 255, 255, 0.15) 50%,
-    rgba(255, 255, 255, 0.05) 100%
-  );
-  font-family: "Junge", cursive;
-  color: white;
-  text-transform: uppercase;
-  font-size: 18px;
-  font-weight: 300;
-  border-radius: 18px;
-   text-shadow: 4px 4px 4px rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(2px);
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15);
-  outline: none;
-  cursor: pointer;
-  transition: all 0.3s ease-in-out;
+.indexContent button {
+    display: inline-block;
+    width: auto;
+    padding: 10px 24px;
+    align-self: center;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    background: linear-gradient(
+            to bottom,
+            rgba(255, 255, 255, 0.45) 0%,
+            rgba(255, 255, 255, 0.15) 50%,
+            rgba(255, 255, 255, 0.05) 100%
+    );
+    font-family: "Junge", cursive;
+    color: white;
+    text-transform: uppercase;
+    font-size: 18px;
+    font-weight: 300;
+    border-radius: 18px;
+    text-shadow: 4px 4px 4px rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(2px);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15);
+    outline: none;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
 
 }
 
 
 .indexContent button:hover {
-  background: rgba(255, 255, 255, 0.2);
-  transform: translateY(-2px) scale(1.02);
-  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.25);
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.25);
 }
 
 
 .indexContent button:active {
-  transform: scale(0.98);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    transform: scale(0.98);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
-  @media (max-width: 768px) {
+@media (max-width: 768px) {
     .logostyle {
-      top: 40px;
-      left: 50%;
-      transform: translateX(-50%); 
+        top: 40px;
+        left: 50%;
+        transform: translateX(-50%);
     }
-    .indexcontainer{
+
+    .indexcontainer {
         position: relative;
-     
+
         height: 100vh;
-    width:full;
-    object-fit:contain;
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-    display: flex;
-    justify-content: center;
-    align-items: flex-end;
-   
-     }
-    .indexContent button{
-    font-size: 16px;
-      padding: 8px 20px; 
+        width: full;
+        object-fit: contain;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        display: flex;
+        justify-content: center;
+        align-items: flex-end;
+
     }
-    
-    .indexContent h2{
-         font-size: 20px;
+
+    .indexContent button {
+        font-size: 16px;
+        padding: 8px 20px;
+    }
+
+    .indexContent h2 {
+        font-size: 20px;
         font-weight: 100;
-        
+
     }
 
 
-  }
+}

@@ -7,7 +7,7 @@ import '../CSS/naveventstyle.css';
 import logo from '../assets/logo.png';
 import Swal from 'sweetalert2';
 import CONFIG from '../config';
-import ErrorPage from './Errorpage.jsx';
+import ErrorPage from './ErrorPage.jsx';
 import ImageModal from './common/ImageModal';
 import LoadingSpinner from './common/LoadingSpinner';
 import GalleryNavigation from './common/GalleryNavigation';

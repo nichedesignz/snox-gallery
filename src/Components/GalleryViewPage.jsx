@@ -7,7 +7,7 @@ import download from "../assets/download.png";
 import nextArrow from "../assets/next.png";
 import previousArrow from "../assets/back.png";
 
-import ErrorPage from "./Errorpage.jsx";
+import ErrorPage from "./ErrorPage.jsx";
 import GalleryService from '../services/galleryService';
 import Footer from './common/Footer';
 import '../CSS/footer.css';
